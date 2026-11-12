@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-slate-50 text-blue-950">
         <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
           <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
             <Link href="/" className="text-xl font-black tracking-tight">
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <div className="ml-auto flex items-center gap-3">
               <Link
                 href="/admin/login"
-                className="text-sm font-bold text-slate-800 hover:text-orange-700"
+                className="text-sm font-bold text-blue-900 hover:text-orange-700"
               >
                 Admin
               </Link>

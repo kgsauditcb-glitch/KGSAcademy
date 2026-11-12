@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     return (
       <div className="mx-auto max-w-xl px-6 py-24 text-center">
         <h1 className="text-2xl font-black">Supabase not configured</h1>
-        <p className="mt-3 text-slate-800">
+        <p className="mt-3 text-blue-900">
           Copy .env.example to .env.local and fill in your project credentials to use the admin panel.
         </p>
       </div>
@@ -32,7 +32,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
       <aside className="w-52 shrink-0">
-        <p className="px-3 text-xs font-extrabold uppercase tracking-wide text-slate-800">
+        <p className="px-3 text-xs font-extrabold uppercase tracking-wide text-blue-900">
           Admin
         </p>
         <nav className="mt-3 space-y-1">
@@ -40,7 +40,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link
               key={item.href}
               href={item.href}
-              className="block rounded-lg px-3 py-2 text-sm font-bold text-slate-800 hover:bg-slate-100"
+              className="block rounded-lg px-3 py-2 text-sm font-bold text-blue-900 hover:bg-slate-100"
             >
               {item.label}
             </Link>

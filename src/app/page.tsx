@@ -37,7 +37,7 @@ export default async function Home() {
             <div className="mt-8 flex max-w-xl gap-2 rounded-2xl bg-white p-1.5">
               <input
                 placeholder="What do you want to learn? e.g. Internal Audit, ISO 9001, ESG…"
-                className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none"
+                className="flex-1 rounded-xl px-4 py-3 text-sm text-blue-950 outline-none"
               />
               <Link
                 href="/courses"
@@ -64,9 +64,9 @@ export default async function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">What&apos;s happening</h2>
-            <p className="mt-1 text-slate-800">Upcoming sessions across the academy.</p>
+            <p className="mt-1 text-blue-900">Upcoming sessions across the academy.</p>
           </div>
-          <Link href="/calendar" className="text-sm font-bold text-slate-800 hover:text-orange-700 hover:underline">
+          <Link href="/calendar" className="text-sm font-bold text-blue-900 hover:text-orange-700 hover:underline">
             View full calendar →
           </Link>
         </div>
@@ -94,9 +94,9 @@ export default async function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">Explore the Academy</h2>
-            <p className="mt-1 text-slate-800">Featured courses from the catalogue.</p>
+            <p className="mt-1 text-blue-900">Featured courses from the catalogue.</p>
           </div>
-          <Link href="/courses" className="text-sm font-bold text-slate-800 hover:text-orange-700 hover:underline">
+          <Link href="/courses" className="text-sm font-bold text-blue-900 hover:text-orange-700 hover:underline">
             View all courses →
           </Link>
         </div>
@@ -125,7 +125,7 @@ export default async function Home() {
                   className="rounded-2xl border border-slate-200 p-5 hover:border-orange-400 hover:shadow-sm"
                 >
                   <p className="font-extrabold">{s.code}</p>
-                  <p className="mt-1 text-sm text-slate-800">{s.name}</p>
+                  <p className="mt-1 text-sm text-blue-900">{s.name}</p>
                 </Link>
               ))}
             </div>
@@ -138,7 +138,7 @@ export default async function Home() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
             <h2 className="text-3xl font-black tracking-tight">Talk to us</h2>
-            <p className="mt-3 text-slate-800">
+            <p className="mt-3 text-blue-900">
               Individual enrolment, corporate group training or a custom programme —
               send us an enquiry and we will get back to you.
             </p>
@@ -155,8 +155,8 @@ export default async function Home() {
 function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
     <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center">
-      <p className="font-bold text-slate-800">{title}</p>
-      {hint && <p className="mt-1 text-sm text-slate-800">{hint}</p>}
+      <p className="font-bold text-blue-900">{title}</p>
+      {hint && <p className="mt-1 text-sm text-blue-900">{hint}</p>}
     </div>
   );
 }

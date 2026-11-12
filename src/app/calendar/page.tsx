@@ -11,16 +11,16 @@ export default async function CalendarPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
       <h1 className="text-4xl font-black tracking-tight">Course calendar</h1>
-      <p className="mt-2 text-slate-800">All upcoming sessions across the academy.</p>
+      <p className="mt-2 text-blue-900">All upcoming sessions across the academy.</p>
 
       <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6">
         {sessions.length === 0 ? (
           <div className="p-12 text-center">
-            <p className="font-bold text-slate-800">
+            <p className="font-bold text-blue-900">
               {isSupabaseConfigured() ? 'No upcoming sessions' : 'Connect Supabase to load the calendar'}
             </p>
             {!isSupabaseConfigured() && (
-              <p className="mt-1 text-sm text-slate-800">
+              <p className="mt-1 text-sm text-blue-900">
                 Copy .env.example to .env.local and apply supabase/migrations/0001_init.sql.
               </p>
             )}
