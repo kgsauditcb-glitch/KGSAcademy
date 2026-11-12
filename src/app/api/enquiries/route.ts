@@ -42,7 +42,7 @@ async function notifyEnquiry(details: {
     </table>`;
 
   try {
-    await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+    const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
       method: 'POST',
       headers: {
         apikey: serviceKey,
@@ -57,6 +57,9 @@ async function notifyEnquiry(details: {
         html,
       }),
     });
+    if (!res.ok) {
+      console.error('send-email function failed', res.status, await res.text());
+    }
   } catch (err) {
     console.error('Failed to send enquiry notification email', err);
   }
