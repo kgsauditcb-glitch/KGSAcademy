@@ -21,10 +21,10 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-950 via-violet-950 to-violet-700 text-white">
+      <section className="bg-gradient-to-br from-slate-950 via-blue-950 to-blue-900 text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-violet-200">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-orange-200">
               Professional learning • Live & classroom
             </p>
             <h1 className="mt-3 text-5xl font-black leading-[1.05] tracking-tight">
@@ -41,7 +41,7 @@ export default async function Home() {
               />
               <Link
                 href="/courses"
-                className="rounded-xl bg-violet-600 px-5 py-3 text-sm font-bold text-white hover:bg-violet-700"
+                className="rounded-xl bg-orange-700 px-5 py-3 text-sm font-bold text-white hover:bg-orange-800"
               >
                 Explore courses
               </Link>
@@ -66,7 +66,7 @@ export default async function Home() {
             <h2 className="text-3xl font-black tracking-tight">What&apos;s happening</h2>
             <p className="mt-1 text-slate-800">Upcoming sessions across the academy.</p>
           </div>
-          <Link href="/calendar" className="text-sm font-bold text-slate-800 hover:text-violet-600 hover:underline">
+          <Link href="/calendar" className="text-sm font-bold text-slate-800 hover:text-orange-700 hover:underline">
             View full calendar →
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default async function Home() {
             <h2 className="text-3xl font-black tracking-tight">Explore the Academy</h2>
             <p className="mt-1 text-slate-800">Featured courses from the catalogue.</p>
           </div>
-          <Link href="/courses" className="text-sm font-bold text-slate-800 hover:text-violet-600 hover:underline">
+          <Link href="/courses" className="text-sm font-bold text-slate-800 hover:text-orange-700 hover:underline">
             View all courses →
           </Link>
         </div>
@@ -122,7 +122,7 @@ export default async function Home() {
                 <Link
                   key={s.id}
                   href={`/courses?standard=${s.slug}`}
-                  className="rounded-2xl border border-slate-200 p-5 hover:border-violet-400 hover:shadow-sm"
+                  className="rounded-2xl border border-slate-200 p-5 hover:border-orange-400 hover:shadow-sm"
                 >
                   <p className="font-extrabold">{s.code}</p>
                   <p className="mt-1 text-sm text-slate-800">{s.name}</p>

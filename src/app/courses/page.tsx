@@ -22,7 +22,7 @@ export default async function CoursesPage({
 
   const chip =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
-    'border-slate-200 bg-white text-slate-800 hover:border-violet-400';
+    'border-slate-200 bg-white text-slate-800 hover:border-orange-400';
   const chipActive =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
     'border-slate-900 bg-slate-900 text-white';

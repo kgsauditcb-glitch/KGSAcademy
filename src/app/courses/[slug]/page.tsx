@@ -24,7 +24,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
           <p className="mt-3 text-slate-800">
             Supabase is not configured yet — copy .env.example to .env.local and apply the migration.
           </p>
-          <Link href="/courses" className="mt-6 inline-block font-bold text-slate-800 hover:text-violet-600 hover:underline">
+          <Link href="/courses" className="mt-6 inline-block font-bold text-slate-800 hover:text-orange-700 hover:underline">
             ← Back to courses
           </Link>
         </div>
@@ -41,7 +41,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
-      <Link href="/courses" className="text-sm font-bold text-slate-800 hover:text-violet-600 hover:underline">
+      <Link href="/courses" className="text-sm font-bold text-slate-800 hover:text-orange-700 hover:underline">
         ← All courses
       </Link>
 
@@ -49,7 +49,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
         <div>
           <div className="flex flex-wrap items-center gap-2">
             {course.standards && (
-              <span className="rounded-md bg-violet-50 px-2 py-1 text-xs font-extrabold text-violet-700">
+              <span className="rounded-md bg-orange-50 px-2 py-1 text-xs font-extrabold text-orange-700">
                 {course.standards.code}
               </span>
             )}

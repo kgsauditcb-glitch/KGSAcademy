@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
           <Link
             key={c.label}
             href={c.href}
-            className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-violet-400 hover:shadow-sm"
+            className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
           >
             <p className="text-sm font-bold text-slate-800">{c.label}</p>
             <p className="mt-2 text-3xl font-black">{c.value}</p>

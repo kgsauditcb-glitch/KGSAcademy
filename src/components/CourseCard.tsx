@@ -15,17 +15,17 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
       href={`/courses/${course.slug}`}
       className="group rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition"
     >
-      <div className="h-32 bg-gradient-to-br from-violet-100 to-blue-100 flex items-end p-4">
-        <span className="text-xs font-extrabold uppercase tracking-wide text-violet-700">
+      <div className="h-32 bg-gradient-to-br from-orange-100 to-amber-100 flex items-end p-4">
+        <span className="text-xs font-extrabold uppercase tracking-wide text-orange-700">
           {course.categories?.name ?? 'Course'}
           {course.featured && ' • Featured'}
         </span>
       </div>
       <div className="p-5">
-        <span className="inline-block rounded-md bg-violet-50 px-2 py-1 text-[11px] font-extrabold text-violet-700">
+        <span className="inline-block rounded-md bg-orange-50 px-2 py-1 text-[11px] font-extrabold text-orange-700">
           {course.standards?.code ?? course.mode.replace('_', ' ')}
         </span>
-        <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-violet-700">
+        <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-orange-700">
           {course.title}
         </h3>
         <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-800">

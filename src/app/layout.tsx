@@ -18,24 +18,24 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
           <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
             <Link href="/" className="text-xl font-black tracking-tight">
-              KGS<span className="text-violet-600">Academy</span>
+              KGS<span className="text-orange-600">Academy</span>
             </Link>
             <nav className="hidden items-center gap-5 text-sm font-semibold md:flex">
-              <Link href="/courses" className="hover:text-violet-600">Courses</Link>
-              <Link href="/calendar" className="hover:text-violet-600">Calendar</Link>
-              <Link href="/standards" className="hover:text-violet-600">Standards</Link>
-              <Link href="/enquiry" className="hover:text-violet-600">Enquire</Link>
+              <Link href="/courses" className="hover:text-orange-700">Courses</Link>
+              <Link href="/calendar" className="hover:text-orange-700">Calendar</Link>
+              <Link href="/standards" className="hover:text-orange-700">Standards</Link>
+              <Link href="/enquiry" className="hover:text-orange-700">Enquire</Link>
             </nav>
             <div className="ml-auto flex items-center gap-3">
               <Link
                 href="/admin/login"
-                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-bold hover:bg-slate-50"
+                className="text-sm font-bold text-slate-800 hover:text-orange-700"
               >
                 Admin
               </Link>
               <Link
                 href="/enquiry"
-                className="rounded-lg bg-violet-600 px-4 py-1.5 text-sm font-bold text-white hover:bg-violet-700"
+                className="rounded-lg bg-orange-700 px-4 py-1.5 text-sm font-bold text-white hover:bg-orange-800"
               >
                 Enquiry
               </Link>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-slate-800 bg-slate-950 text-slate-400">
+        <footer className="border-t border-blue-900 bg-blue-950 text-slate-400">
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <h4 className="font-bold text-white">KGS Academy</h4>
@@ -70,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <Link href="/admin/login" className="mt-2 block text-sm hover:text-white">Sign in</Link>
             </div>
           </div>
-          <div className="border-t border-slate-800 py-4 text-center text-xs">
+          <div className="border-t border-blue-900 py-4 text-center text-xs">
             © 2026 KGS Academy
           </div>
         </footer>

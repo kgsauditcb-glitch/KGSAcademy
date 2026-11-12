@@ -52,7 +52,7 @@ export function EnquiryForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-400';
+    'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
   const label = 'block text-xs font-bold mb-1.5 text-slate-800';
 
   return (
@@ -104,7 +104,7 @@ export function EnquiryForm() {
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="w-full rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-violet-700 disabled:opacity-60"
+        className="w-full rounded-lg bg-orange-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-orange-800 disabled:opacity-60"
       >
         {status === 'sending' ? 'Sending…' : 'Send enquiry'}
       </button>

@@ -25,7 +25,7 @@ export function SessionRow({
       </div>
       <div className="min-w-0 flex-1">
         {courseSlug ? (
-          <Link href={`/courses/${courseSlug}`} className="font-bold hover:text-violet-700">
+          <Link href={`/courses/${courseSlug}`} className="font-bold hover:text-orange-700">
             {courseTitle}
           </Link>
         ) : (

@@ -27,7 +27,7 @@ export default async function StandardsPage() {
             <Link
               key={s.id}
               href={`/courses?standard=${s.slug}`}
-              className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-violet-400 hover:shadow-sm"
+              className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
             >
               <p className="font-extrabold">{s.code}</p>
               <p className="mt-1 text-sm text-slate-800">{s.name}</p>
