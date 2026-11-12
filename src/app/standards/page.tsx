@@ -11,7 +11,7 @@ export default async function StandardsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
       <h1 className="text-4xl font-black tracking-tight">Browse by standard</h1>
-      <p className="mt-2 text-slate-500">
+      <p className="mt-2 text-slate-600">
         KGS Academy training mapped to the standards professionals actually work with.
       </p>
 
@@ -30,8 +30,8 @@ export default async function StandardsPage() {
               className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-violet-400 hover:shadow-sm"
             >
               <p className="font-extrabold">{s.code}</p>
-              <p className="mt-1 text-sm text-slate-500">{s.name}</p>
-              {s.description && <p className="mt-2 text-xs text-slate-400">{s.description}</p>}
+              <p className="mt-1 text-sm text-slate-600">{s.name}</p>
+              {s.description && <p className="mt-2 text-xs text-slate-600">{s.description}</p>}
             </Link>
           ))}
         </div>

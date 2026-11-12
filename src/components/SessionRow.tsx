@@ -31,7 +31,7 @@ export function SessionRow({
         ) : (
           <p className="font-bold">{courseTitle}</p>
         )}
-        <p className="mt-0.5 text-sm text-slate-500">
+        <p className="mt-0.5 text-sm text-slate-600">
           {session.location ?? 'TBA'}
           {session.start_time && ` • ${session.start_time.slice(0, 5)}`}
           {session.capacity != null && ` • ${session.seats_filled}/${session.capacity} seats`}

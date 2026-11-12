@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-6 py-16">
       <h1 className="text-3xl font-black tracking-tight">Admin sign in</h1>
-      <p className="mt-2 text-sm text-slate-500">
+      <p className="mt-2 text-sm text-slate-600">
         Sign in with your KGS Academy admin account.
       </p>
       <Suspense>

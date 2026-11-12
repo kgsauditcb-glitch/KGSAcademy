@@ -24,13 +24,13 @@ export default async function Home() {
       <section className="bg-gradient-to-br from-slate-950 via-violet-950 to-violet-700 text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-violet-300">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-violet-200">
               Professional learning • Live & classroom
             </p>
             <h1 className="mt-3 text-5xl font-black leading-[1.05] tracking-tight">
               Find the right course. At the right time.
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-slate-300">
+            <p className="mt-5 max-w-xl text-lg text-slate-200">
               Auditor and management-system training from KGS Academy — ISO 9001,
               ISO 14001, ISO 45001, ESG and more.
             </p>
@@ -64,7 +64,7 @@ export default async function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">What&apos;s happening</h2>
-            <p className="mt-1 text-slate-500">Upcoming sessions across the academy.</p>
+            <p className="mt-1 text-slate-600">Upcoming sessions across the academy.</p>
           </div>
           <Link href="/calendar" className="text-sm font-bold text-violet-600 hover:underline">
             View full calendar →
@@ -94,7 +94,7 @@ export default async function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">Explore the Academy</h2>
-            <p className="mt-1 text-slate-500">Featured courses from the catalogue.</p>
+            <p className="mt-1 text-slate-600">Featured courses from the catalogue.</p>
           </div>
           <Link href="/courses" className="text-sm font-bold text-violet-600 hover:underline">
             View all courses →
@@ -125,7 +125,7 @@ export default async function Home() {
                   className="rounded-2xl border border-slate-200 p-5 hover:border-violet-400 hover:shadow-sm"
                 >
                   <p className="font-extrabold">{s.code}</p>
-                  <p className="mt-1 text-sm text-slate-500">{s.name}</p>
+                  <p className="mt-1 text-sm text-slate-600">{s.name}</p>
                 </Link>
               ))}
             </div>
@@ -156,7 +156,7 @@ function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
     <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center">
       <p className="font-bold text-slate-700">{title}</p>
-      {hint && <p className="mt-1 text-sm text-slate-500">{hint}</p>}
+      {hint && <p className="mt-1 text-sm text-slate-600">{hint}</p>}
     </div>
   );
 }

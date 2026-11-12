@@ -21,7 +21,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
       return (
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <h1 className="text-3xl font-black">Course not found</h1>
-          <p className="mt-3 text-slate-500">
+          <p className="mt-3 text-slate-600">
             Supabase is not configured yet — copy .env.example to .env.local and apply the migration.
           </p>
           <Link href="/courses" className="mt-6 inline-block font-bold text-violet-600 hover:underline">
@@ -68,7 +68,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
           <h2 className="mt-10 text-2xl font-black">Upcoming sessions</h2>
           <div className="mt-4 rounded-2xl border border-slate-200 bg-white px-6">
             {sessions.length === 0 ? (
-              <p className="py-8 text-sm text-slate-500">No sessions scheduled yet.</p>
+              <p className="py-8 text-sm text-slate-600">No sessions scheduled yet.</p>
             ) : (
               sessions.map((s) => <SessionRow key={s.id} session={s} />)
             )}
@@ -79,7 +79,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
           <div className="text-2xl font-black">
             {inr(course.price_inr) ?? 'Enquire for pricing'}
             {inr(course.mrp_inr) && inr(course.mrp_inr) !== inr(course.price_inr) && (
-              <span className="ml-2 text-base font-medium text-slate-400 line-through">
+              <span className="ml-2 text-base font-medium text-slate-600 line-through">
                 {inr(course.mrp_inr)}
               </span>
             )}
