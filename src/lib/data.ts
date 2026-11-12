@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import type { Course, CourseSession, Enquiry, Profile, Standard, Category } from '@/types/database';
 
@@ -84,6 +85,7 @@ export async function getUpcomingSessions(limit = 10): Promise<
   (CourseSession & { courses: Pick<Course, 'title' | 'slug'> | null })[]
 > {
   if (!isSupabaseConfigured()) return [];
+  await connection();
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('course_sessions')
