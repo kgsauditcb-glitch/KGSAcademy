@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
 
 export function EnquiryForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -20,18 +19,14 @@ export function EnquiryForm() {
     }
 
     setStatus('sending');
-    const supabase = createClient();
 
-    const { error } = await supabase.from('enquiries').insert({
-      name: String(data.name ?? ''),
-      email: String(data.email ?? ''),
-      phone: data.phone ? String(data.phone) : null,
-      enquiry_type: data.enquiry_type ?? 'individual',
-      course_interest: data.course ? String(data.course) : null,
-      message: data.message ? String(data.message) : null,
+    const res = await fetch('/api/enquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
 
-    if (error) {
+    if (!res.ok) {
       setStatus('error');
       return;
     }
