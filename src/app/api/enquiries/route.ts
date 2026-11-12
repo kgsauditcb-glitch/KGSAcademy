@@ -21,6 +21,8 @@ async function notifyEnquiry(details: {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceKey) return;
 
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const rows: [string, string | null][] = [
     ['Name', details.name],
     ['Email', details.email],
@@ -36,29 +38,48 @@ async function notifyEnquiry(details: {
       ${rows
         .map(
           ([k, v]) =>
-            `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">${k}</td><td>${v ?? '—'}</td></tr>`,
+            `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">${k}</td><td>${esc(v ?? '—')}</td></tr>`,
         )
         .join('')}
     </table>`;
 
+  const endpoint = `${supabaseUrl}/functions/v1/send-email`;
+  const headers = {
+    apikey: serviceKey,
+    Authorization: `Bearer ${serviceKey}`,
+    'Content-Type': 'application/json',
+  };
+
+  const teamEmail = fetch(endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      to: ENQUIRY_NOTIFY_EMAILS,
+      subject: `New enquiry: ${details.name}${details.course ? ` — ${details.course}` : ''}`,
+      replyTo: details.email,
+      text,
+      html,
+    }),
+  });
+
+  const copyEmail = fetch(endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      to: details.email,
+      subject: 'We received your KGS Academy enquiry',
+      text: `Hi ${details.name},\n\nThank you for your enquiry. Our team will be in touch shortly.\n\n${text}`,
+      html: `<p>Hi ${esc(details.name)},</p><p>Thank you for your enquiry. Our team will be in touch shortly.</p>${html}`,
+    }),
+  });
+
   try {
-    const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
-      method: 'POST',
-      headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: ENQUIRY_NOTIFY_EMAILS,
-        subject: `New enquiry: ${details.name}${details.course ? ` — ${details.course}` : ''}`,
-        replyTo: details.email,
-        text,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      console.error('send-email function failed', res.status, await res.text());
+    const [teamRes, copyRes] = await Promise.all([teamEmail, copyEmail]);
+    if (!teamRes.ok) {
+      console.error('send-email (team) failed', teamRes.status, await teamRes.text());
+    }
+    if (!copyRes.ok) {
+      console.error('send-email (copy) failed', copyRes.status, await copyRes.text());
     }
   } catch (err) {
     console.error('Failed to send enquiry notification email', err);
