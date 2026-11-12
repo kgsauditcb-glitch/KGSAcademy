@@ -28,12 +28,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             </nav>
             <div className="ml-auto flex items-center gap-3">
               <Link
-                href="/admin/login"
-                className="text-sm font-bold text-blue-900 hover:text-orange-700"
-              >
-                Admin
-              </Link>
-              <Link
                 href="/enquiry"
                 className="rounded-lg bg-orange-700 px-4 py-1.5 text-sm font-bold text-white hover:bg-orange-800"
               >
@@ -64,10 +58,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <h4 className="font-bold text-white">For organisations</h4>
               <Link href="/enquiry" className="mt-2 block text-sm hover:text-white">Corporate training</Link>
               <Link href="/enquiry" className="mt-2 block text-sm hover:text-white">Group enquiries</Link>
-            </div>
-            <div>
-              <h4 className="font-bold text-white">Admin</h4>
-              <Link href="/admin/login" className="mt-2 block text-sm hover:text-white">Sign in</Link>
             </div>
           </div>
           <div className="border-t border-blue-900 py-4 text-center text-xs">
