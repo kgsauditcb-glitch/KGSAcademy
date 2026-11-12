@@ -1,69 +1,162 @@
-import Image from "next/image";
+export const instant = false;
 
-export default function Home() {
+import Link from 'next/link';
+import { CourseCard } from '@/components/CourseCard';
+import { SessionRow } from '@/components/SessionRow';
+import { EnquiryForm } from '@/components/EnquiryForm';
+import {
+  getFeaturedCourses,
+  getUpcomingSessions,
+  getStandards,
+  isSupabaseConfigured,
+} from '@/lib/data';
+
+export default async function Home() {
+  const [courses, sessions, standards] = await Promise.all([
+    getFeaturedCourses(),
+    getUpcomingSessions(5),
+    getStandards(),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-slate-950 via-violet-950 to-violet-700 text-white">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-violet-300">
+              Professional learning • Live & classroom
+            </p>
+            <h1 className="mt-3 text-5xl font-black leading-[1.05] tracking-tight">
+              Find the right course. At the right time.
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-slate-300">
+              Auditor and management-system training from KGS Academy — ISO 9001,
+              ISO 14001, ISO 45001, ESG and more.
+            </p>
+            <div className="mt-8 flex max-w-xl gap-2 rounded-2xl bg-white p-1.5">
+              <input
+                placeholder="What do you want to learn? e.g. Internal Audit, ISO 9001, ESG…"
+                className="flex-1 rounded-xl px-4 py-3 text-sm text-slate-900 outline-none"
+              />
+              <Link
+                href="/courses"
+                className="rounded-xl bg-violet-600 px-5 py-3 text-sm font-bold text-white hover:bg-violet-700"
+              >
+                Explore courses
+              </Link>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
+            <h3 className="font-bold">Academy at a glance</h3>
+            <div className="mt-4 divide-y divide-white/10 text-sm">
+              <div className="flex justify-between py-3"><span>Courses & programmes</span><b>{courses.length || '—'}</b></div>
+              <div className="flex justify-between py-3"><span>Upcoming sessions</span><b>{sessions.length || '—'}</b></div>
+              <div className="flex justify-between py-3"><span>Standards covered</span><b>{standards.length || '—'}</b></div>
+              <div className="flex justify-between py-3"><span>Delivery modes</span><b>Classroom • Live Online</b></div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+      </section>
+
+      {/* Today's sessions */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mb-6 flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">What&apos;s happening</h2>
+            <p className="mt-1 text-slate-500">Upcoming sessions across the academy.</p>
+          </div>
+          <Link href="/calendar" className="text-sm font-bold text-violet-600 hover:underline">
+            View full calendar →
+          </Link>
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6">
+          {sessions.length === 0 ? (
+            <EmptyState
+              title={isSupabaseConfigured() ? 'No upcoming sessions' : 'Connect Supabase to load live data'}
+              hint={isSupabaseConfigured() ? 'Check back soon or browse all courses.' : 'Copy .env.example to .env.local and run the migration.'}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          ) : (
+            sessions.map((s) => (
+              <SessionRow
+                key={s.id}
+                session={s}
+                courseTitle={s.courses?.title}
+                courseSlug={s.courses?.slug}
+              />
+            ))
+          )}
         </div>
-      </main>
+      </section>
+
+      {/* Featured courses */}
+      <section className="mx-auto max-w-6xl px-6 pb-16">
+        <div className="mb-6 flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">Explore the Academy</h2>
+            <p className="mt-1 text-slate-500">Featured courses from the catalogue.</p>
+          </div>
+          <Link href="/courses" className="text-sm font-bold text-violet-600 hover:underline">
+            View all courses →
+          </Link>
+        </div>
+        {courses.length === 0 ? (
+          <EmptyState
+            title={isSupabaseConfigured() ? 'No courses published yet' : 'Connect Supabase to load the catalogue'}
+            hint={isSupabaseConfigured() ? undefined : 'Copy .env.example to .env.local, run supabase/migrations, then restart dev.'}
+          />
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {courses.map((c) => <CourseCard key={c.id} course={c} />)}
+          </div>
+        )}
+      </section>
+
+      {/* Standards */}
+      {standards.length > 0 && (
+        <section className="border-y border-slate-200 bg-white">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <h2 className="text-3xl font-black tracking-tight">Browse by standard</h2>
+            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {standards.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/courses?standard=${s.slug}`}
+                  className="rounded-2xl border border-slate-200 p-5 hover:border-violet-400 hover:shadow-sm"
+                >
+                  <p className="font-extrabold">{s.code}</p>
+                  <p className="mt-1 text-sm text-slate-500">{s.name}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Enquiry */}
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">Talk to us</h2>
+            <p className="mt-3 text-slate-600">
+              Individual enrolment, corporate group training or a custom programme —
+              send us an enquiry and we will get back to you.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <EnquiryForm />
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function EmptyState({ title, hint }: { title: string; hint?: string }) {
+  return (
+    <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center">
+      <p className="font-bold text-slate-700">{title}</p>
+      {hint && <p className="mt-1 text-sm text-slate-500">{hint}</p>}
     </div>
   );
 }
