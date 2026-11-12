@@ -44,3 +44,23 @@ from (values
   ('risk-based-thinking-workshop',    '2026-09-30', '2026-09-30', '18:30', 'Live online',        60, 'scheduled')
 ) as s(course_slug, start_date, end_date, start_time, location, capacity, status)
 join public.courses c on c.slug = s.course_slug;
+
+-- Upcoming sessions (added 2026-11-12 so the calendar shows future dates)
+insert into public.course_sessions (course_id, start_date, end_date, start_time, location, capacity, seats_filled, status)
+select c.id, s.start_date::date, s.end_date::date, s.start_time::time, s.location, s.capacity, s.seats_filled, s.status::public.session_status
+from (values
+  ('internal-auditor-training',       '2026-11-23', '2026-11-24', '09:30', 'Live online', 30, 12, 'open'),
+  ('internal-auditor-training',       '2026-12-07', '2026-12-08', '09:30', 'Live online', 30,  0, 'scheduled'),
+  ('iso-9001-lead-auditor',           '2026-11-30', '2026-12-04', '09:30', 'Bengaluru',   20,  7, 'open'),
+  ('iso-9001-lead-auditor',           '2027-01-11', '2027-01-15', '09:30', 'Live online', 25, 0, 'scheduled'),
+  ('esg-sustainability-fundamentals', '2026-11-18', '2026-11-18', '18:30', 'Live online', 50, 22, 'open'),
+  ('iso-14001-awareness',             '2026-12-05', '2026-12-05', '10:00', 'Pune',       40,  5, 'open'),
+  ('risk-based-thinking-workshop',    '2026-12-12', '2026-12-12', '18:30', 'Live online', 60,  0, 'scheduled')
+) as s(course_slug, start_date, end_date, start_time, location, capacity, seats_filled, status)
+join public.courses c on c.slug = s.course_slug;
+
+insert into public.enquiries (name, email, phone, enquiry_type, course_interest, message, status) values
+  ('Priya Sharma',  'priya.sharma@example.com',    '+91 98450 12345', 'individual', 'ISO 9001:2015 Lead Auditor',       'Interested in the December Bengaluru batch. Can you share the exam details?', 'new'),
+  ('Rahul Verma',   'rahul.verma@acme-india.com',  '+91 99870 44556', 'corporate',  'Internal Auditor Training',        'We want to train 15 auditors from our quality team in January.',               'new'),
+  ('Ananya Iyer',   'ananya.iyer@example.com',     '+91 90040 77889', 'individual', 'ESG & Sustainability Fundamentals','Is there an early-bird discount for the November session?',                 'in_progress'),
+  ('Vikram Singh',  'vikram.s@techcorp.in',        null,              'corporate',  'ISO 14001 Awareness',                'Looking for an on-site corporate workshop for our EHS team.',                  'new');
