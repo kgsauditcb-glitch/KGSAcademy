@@ -19,14 +19,14 @@ export default async function AdminCoursesPage() {
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-3xl font-black tracking-tight">Courses</h1>
-          <p className="mt-1 text-blue-200">{courses.length} course{courses.length === 1 ? '' : 's'} in the catalogue.</p>
+          <p className="mt-1 text-(--text-secondary)">{courses.length} course{courses.length === 1 ? '' : 's'} in the catalogue.</p>
         </div>
         {/* TODO: "New course" button → /admin/courses/new form */}
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-2xl border border-blue-800 bg-blue-900">
+      <div className="mt-8 overflow-hidden rounded-2xl border border-(--border) bg-(--bg-card)">
         <table className="w-full text-sm">
-          <thead className="bg-blue-950 text-left text-xs font-extrabold uppercase tracking-wide text-blue-200">
+          <thead className="bg-(--bg-page) text-left text-xs font-extrabold uppercase tracking-wide text-(--text-secondary)">
             <tr>
               <th className="px-5 py-3">Title</th>
               <th className="px-5 py-3">Category</th>
@@ -35,23 +35,23 @@ export default async function AdminCoursesPage() {
               <th className="px-5 py-3">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-blue-800">
+          <tbody className="divide-y divide-(--border)">
             {courses.length === 0 ? (
-              <tr><td colSpan={5} className="px-5 py-10 text-center text-blue-200">No courses yet.</td></tr>
+              <tr><td colSpan={5} className="px-5 py-10 text-center text-(--text-secondary)">No courses yet.</td></tr>
             ) : (
               courses.map((c) => (
-                <tr key={c.id} className="hover:bg-blue-950">
+                <tr key={c.id} className="hover:bg-(--bg-page)">
                   <td className="px-5 py-3 font-bold">{c.title}</td>
-                  <td className="px-5 py-3 text-blue-200">{c.categories?.name ?? '—'}</td>
-                  <td className="px-5 py-3 text-blue-200">{MODE_LABELS[c.mode] ?? c.mode}</td>
-                  <td className="px-5 py-3 text-blue-200">
+                  <td className="px-5 py-3 text-(--text-secondary)">{c.categories?.name ?? '—'}</td>
+                  <td className="px-5 py-3 text-(--text-secondary)">{MODE_LABELS[c.mode] ?? c.mode}</td>
+                  <td className="px-5 py-3 text-(--text-secondary)">
                     {c.price_inr != null ? `₹${Number(c.price_inr).toLocaleString('en-IN')}` : '—'}
                   </td>
                   <td className="px-5 py-3">
                     <span className={`rounded-full px-2.5 py-1 text-xs font-extrabold ${
                       c.status === 'published' ? 'bg-emerald-950 text-emerald-300'
                       : c.status === 'draft' ? 'bg-amber-950 text-amber-300'
-                      : 'bg-blue-800 text-blue-200'
+                      : 'bg-(--bg-subtle) text-(--text-secondary)'
                     }`}>
                       {c.status}
                     </span>

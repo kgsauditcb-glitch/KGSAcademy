@@ -21,10 +21,10 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
       return (
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <h1 className="text-3xl font-black">Course not found</h1>
-          <p className="mt-3 text-blue-200">
+          <p className="mt-3 text-(--text-secondary)">
             Supabase is not configured yet — copy .env.example to .env.local and apply the migration.
           </p>
-          <Link href="/courses" className="mt-6 inline-block font-bold text-blue-200 hover:text-orange-300 hover:underline">
+          <Link href="/courses" className="mt-6 inline-block font-bold text-(--text-secondary) hover:text-orange-300 hover:underline">
             ← Back to courses
           </Link>
         </div>
@@ -41,7 +41,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
-      <Link href="/courses" className="text-sm font-bold text-blue-200 hover:text-orange-300 hover:underline">
+      <Link href="/courses" className="text-sm font-bold text-(--text-secondary) hover:text-orange-300 hover:underline">
         ← All courses
       </Link>
 
@@ -54,42 +54,42 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
               </span>
             )}
             {course.categories && (
-              <span className="rounded-md bg-blue-800 px-2 py-1 text-xs font-extrabold text-blue-200">
+              <span className="rounded-md bg-(--bg-subtle) px-2 py-1 text-xs font-extrabold text-(--text-secondary)">
                 {course.categories.name}
               </span>
             )}
           </div>
           <h1 className="mt-3 text-4xl font-black tracking-tight">{course.title}</h1>
-          {course.summary && <p className="mt-3 text-lg text-blue-200">{course.summary}</p>}
+          {course.summary && <p className="mt-3 text-lg text-(--text-secondary)">{course.summary}</p>}
           {course.description && (
-            <p className="mt-6 whitespace-pre-line text-blue-200">{course.description}</p>
+            <p className="mt-6 whitespace-pre-line text-(--text-secondary)">{course.description}</p>
           )}
 
           <h2 className="mt-10 text-2xl font-black">Upcoming sessions</h2>
-          <div className="mt-4 rounded-2xl border border-blue-800 bg-blue-900 px-6">
+          <div className="mt-4 rounded-2xl border border-(--border) bg-(--bg-card) px-6">
             {sessions.length === 0 ? (
-              <p className="py-8 text-sm text-blue-200">No sessions scheduled yet.</p>
+              <p className="py-8 text-sm text-(--text-secondary)">No sessions scheduled yet.</p>
             ) : (
               sessions.map((s) => <SessionRow key={s.id} session={s} />)
             )}
           </div>
         </div>
 
-        <aside className="h-fit rounded-2xl border border-blue-800 bg-blue-900 p-6 lg:sticky lg:top-24">
+        <aside className="h-fit rounded-2xl border border-(--border) bg-(--bg-card) p-6 lg:sticky lg:top-24">
           <div className="text-2xl font-black">
             {inr(course.price_inr) ?? 'Enquire for pricing'}
             {inr(course.mrp_inr) && inr(course.mrp_inr) !== inr(course.price_inr) && (
-              <span className="ml-2 text-base font-medium text-blue-200 line-through">
+              <span className="ml-2 text-base font-medium text-(--text-secondary) line-through">
                 {inr(course.mrp_inr)}
               </span>
             )}
           </div>
-          <ul className="mt-4 space-y-2 text-sm text-blue-200">
+          <ul className="mt-4 space-y-2 text-sm text-(--text-secondary)">
             {course.duration_days && <li>Duration: <b>{course.duration_days} days</b></li>}
             <li>Mode: <b className="capitalize">{course.mode.replace('_', ' ')}</b></li>
             {course.certificate && <li>Certificate included</li>}
           </ul>
-          <div className="mt-6 border-t border-blue-800 pt-6">
+          <div className="mt-6 border-t border-(--border) pt-6">
             <h3 className="font-bold">Interested?</h3>
             <div className="mt-3">
               <EnquiryForm />

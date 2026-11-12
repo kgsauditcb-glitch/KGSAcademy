@@ -22,7 +22,7 @@ export default async function CoursesPage({
 
   const chip =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
-    'border-blue-800 bg-blue-900 text-blue-200 hover:border-orange-400';
+    'border-(--border) bg-(--bg-card) text-(--text-secondary) hover:border-orange-400';
   const chipActive =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
     'border-orange-700 bg-orange-700 text-white';
@@ -30,7 +30,7 @@ export default async function CoursesPage({
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
       <h1 className="text-4xl font-black tracking-tight">Courses</h1>
-      <p className="mt-2 text-blue-200">
+      <p className="mt-2 text-(--text-secondary)">
         Browse the full KGS Academy catalogue by category, standard or delivery mode.
       </p>
 
@@ -53,7 +53,7 @@ export default async function CoursesPage({
       {/* Standard filter */}
       {standards.length > 0 && (
         <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-          <span className="self-center text-xs font-extrabold uppercase tracking-wide text-blue-200">
+          <span className="self-center text-xs font-extrabold uppercase tracking-wide text-(--text-secondary)">
             Standard:
           </span>
           {standards.map((s) => (
@@ -69,18 +69,18 @@ export default async function CoursesPage({
       )}
 
       {q && (
-        <p className="mt-6 text-sm text-blue-200">
+        <p className="mt-6 text-sm text-(--text-secondary)">
           Results for <b>&ldquo;{q}&rdquo;</b> — {courses.length} course{courses.length === 1 ? '' : 's'}
         </p>
       )}
 
       {courses.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-blue-700 bg-blue-900 p-12 text-center">
-          <p className="font-bold text-blue-200">
+        <div className="mt-10 rounded-2xl border border-dashed border-(--border-strong) bg-(--bg-card) p-12 text-center">
+          <p className="font-bold text-(--text-secondary)">
             {isSupabaseConfigured() ? 'No courses match your filters' : 'Connect Supabase to load the catalogue'}
           </p>
           {!isSupabaseConfigured() && (
-            <p className="mt-1 text-sm text-blue-200">
+            <p className="mt-1 text-sm text-(--text-secondary)">
               Copy .env.example to .env.local and apply supabase/migrations/0001_init.sql.
             </p>
           )}

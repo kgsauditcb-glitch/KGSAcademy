@@ -52,8 +52,8 @@ export function EnquiryForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-blue-800 bg-blue-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
-  const label = 'block text-xs font-bold mb-1.5 text-blue-200';
+    'w-full rounded-lg border border-(--border) bg-(--bg-card) px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
+  const label = 'block text-xs font-bold mb-1.5 text-(--text-secondary)';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">

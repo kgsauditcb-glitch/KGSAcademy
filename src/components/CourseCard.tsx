@@ -13,7 +13,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="group rounded-2xl border border-blue-800 bg-blue-900 shadow-sm overflow-hidden hover:shadow-md transition"
+      className="group rounded-2xl border border-(--border) bg-(--bg-card) shadow-sm overflow-hidden hover:shadow-md transition"
     >
       <div className="h-32 bg-gradient-to-br from-orange-900 to-amber-900 flex items-end p-4">
         <span className="text-xs font-extrabold uppercase tracking-wide text-orange-300">
@@ -28,7 +28,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
         <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-orange-300">
           {course.title}
         </h3>
-        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-blue-200">
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-(--text-secondary)">
           {course.duration_days && <span>{course.duration_days} days</span>}
           <span className="capitalize">{course.mode.replace('_', ' ')}</span>
           {course.certificate && <span>Certificate</span>}
@@ -37,7 +37,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
           <div className="mt-4 font-extrabold">
             {price}
             {mrp && mrp !== price && (
-              <span className="ml-2 text-sm font-medium text-blue-200 line-through">{mrp}</span>
+              <span className="ml-2 text-sm font-medium text-(--text-secondary) line-through">{mrp}</span>
             )}
           </div>
         )}

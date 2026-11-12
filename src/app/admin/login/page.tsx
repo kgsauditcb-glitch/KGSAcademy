@@ -33,16 +33,16 @@ function LoginForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-blue-800 bg-blue-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
+    'w-full rounded-lg border border-(--border) bg-(--bg-card) px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-4 rounded-2xl border border-blue-800 bg-blue-900 p-6">
+    <form onSubmit={handleSubmit} className="mt-8 space-y-4 rounded-2xl border border-(--border) bg-(--bg-card) p-6">
       <div>
-        <label className="mb-1.5 block text-xs font-bold text-blue-200" htmlFor="email">Email</label>
+        <label className="mb-1.5 block text-xs font-bold text-(--text-secondary)" htmlFor="email">Email</label>
         <input id="email" name="email" type="email" required className={input} autoComplete="email" />
       </div>
       <div>
-        <label className="mb-1.5 block text-xs font-bold text-blue-200" htmlFor="password">Password</label>
+        <label className="mb-1.5 block text-xs font-bold text-(--text-secondary)" htmlFor="password">Password</label>
         <input id="password" name="password" type="password" required className={input} autoComplete="current-password" />
       </div>
       {error && <p className="text-sm text-red-400">{error}</p>}
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-6 py-16">
       <h1 className="text-3xl font-black tracking-tight">Admin sign in</h1>
-      <p className="mt-2 text-sm text-blue-200">
+      <p className="mt-2 text-sm text-(--text-secondary)">
         Sign in with your KGS Academy admin account.
       </p>
       <Suspense>
