@@ -28,7 +28,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
         <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-violet-700">
           {course.title}
         </h3>
-        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600">
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-800">
           {course.duration_days && <span>{course.duration_days} days</span>}
           <span className="capitalize">{course.mode.replace('_', ' ')}</span>
           {course.certificate && <span>Certificate</span>}
@@ -37,7 +37,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
           <div className="mt-4 font-extrabold">
             {price}
             {mrp && mrp !== price && (
-              <span className="ml-2 text-sm font-medium text-slate-600 line-through">{mrp}</span>
+              <span className="ml-2 text-sm font-medium text-slate-800 line-through">{mrp}</span>
             )}
           </div>
         )}
