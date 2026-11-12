@@ -11,13 +11,13 @@ export default async function StandardsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
       <h1 className="text-4xl font-black tracking-tight">Browse by standard</h1>
-      <p className="mt-2 text-blue-900">
+      <p className="mt-2 text-blue-200">
         KGS Academy training mapped to the standards professionals actually work with.
       </p>
 
       {standards.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-blue-300 bg-white p-12 text-center">
-          <p className="font-bold text-blue-900">
+        <div className="mt-10 rounded-2xl border border-dashed border-blue-700 bg-blue-900 p-12 text-center">
+          <p className="font-bold text-blue-200">
             {isSupabaseConfigured() ? 'No standards yet' : 'Connect Supabase to load standards'}
           </p>
         </div>
@@ -27,11 +27,11 @@ export default async function StandardsPage() {
             <Link
               key={s.id}
               href={`/courses?standard=${s.slug}`}
-              className="rounded-2xl border border-blue-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
+              className="rounded-2xl border border-blue-800 bg-blue-900 p-5 hover:border-orange-400 hover:shadow-sm"
             >
               <p className="font-extrabold">{s.code}</p>
-              <p className="mt-1 text-sm text-blue-900">{s.name}</p>
-              {s.description && <p className="mt-2 text-xs text-blue-900">{s.description}</p>}
+              <p className="mt-1 text-sm text-blue-200">{s.name}</p>
+              {s.description && <p className="mt-2 text-xs text-blue-200">{s.description}</p>}
             </Link>
           ))}
         </div>

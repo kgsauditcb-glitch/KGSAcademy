@@ -18,24 +18,24 @@ export default async function AdminDashboard() {
   return (
     <div>
       <h1 className="text-3xl font-black tracking-tight">Dashboard</h1>
-      <p className="mt-1 text-blue-900">Overview of the academy catalogue and enquiries.</p>
+      <p className="mt-1 text-blue-200">Overview of the academy catalogue and enquiries.</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
           <Link
             key={c.label}
             href={c.href}
-            className="rounded-2xl border border-blue-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
+            className="rounded-2xl border border-blue-800 bg-blue-900 p-5 hover:border-orange-400 hover:shadow-sm"
           >
-            <p className="text-sm font-bold text-blue-900">{c.label}</p>
+            <p className="text-sm font-bold text-blue-200">{c.label}</p>
             <p className="mt-2 text-3xl font-black">{c.value}</p>
           </Link>
         ))}
       </div>
 
-      <div className="mt-10 rounded-2xl border border-dashed border-blue-300 bg-white p-8 text-center">
-        <p className="font-bold text-blue-900">Course & session management</p>
-        <p className="mt-1 text-sm text-blue-900">
+      <div className="mt-10 rounded-2xl border border-dashed border-blue-700 bg-blue-900 p-8 text-center">
+        <p className="font-bold text-blue-200">Course & session management</p>
+        <p className="mt-1 text-sm text-blue-200">
           CRUD screens for courses, sessions and enquiries are scaffolded under /admin —
           see docs/ROADMAP.md for the planned implementation steps.
         </p>

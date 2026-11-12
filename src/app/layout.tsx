@@ -14,17 +14,17 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-blue-50 text-blue-950">
-        <header className="sticky top-0 z-20 border-b border-blue-200 bg-white/90 backdrop-blur">
+      <body className="min-h-full flex flex-col bg-blue-950 text-blue-50">
+        <header className="sticky top-0 z-20 border-b border-blue-800 bg-blue-950/90 backdrop-blur">
           <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
             <Link href="/" className="text-xl font-black tracking-tight">
-              KGS<span className="text-orange-600">Academy</span>
+              <span className="text-blue-50">KGS</span><span className="text-orange-400">Academy</span>
             </Link>
             <nav className="hidden items-center gap-5 text-sm font-semibold md:flex">
-              <Link href="/courses" className="hover:text-orange-700">Courses</Link>
-              <Link href="/calendar" className="hover:text-orange-700">Calendar</Link>
-              <Link href="/standards" className="hover:text-orange-700">Standards</Link>
-              <Link href="/enquiry" className="hover:text-orange-700">Enquire</Link>
+              <Link href="/courses" className="hover:text-orange-300">Courses</Link>
+              <Link href="/calendar" className="hover:text-orange-300">Calendar</Link>
+              <Link href="/standards" className="hover:text-orange-300">Standards</Link>
+              <Link href="/enquiry" className="hover:text-orange-300">Enquire</Link>
             </nav>
             <div className="ml-auto flex items-center gap-3">
               <Link
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-blue-900 bg-blue-950 text-blue-300">
+        <footer className="border-t border-blue-800 bg-blue-950 text-blue-300">
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <h4 className="font-bold text-white">KGS Academy</h4>
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <Link href="/enquiry" className="mt-2 block text-sm hover:text-white">Group enquiries</Link>
             </div>
           </div>
-          <div className="border-t border-blue-900 py-4 text-center text-xs">
+          <div className="border-t border-blue-800 py-4 text-center text-xs">
             © 2026 KGS Academy
           </div>
         </footer>

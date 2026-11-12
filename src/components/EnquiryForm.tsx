@@ -42,9 +42,9 @@ export function EnquiryForm() {
 
   if (status === 'sent') {
     return (
-      <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-6 text-center">
-        <p className="font-bold text-emerald-800">Thank you!</p>
-        <p className="text-sm text-emerald-700 mt-1">
+      <div className="rounded-xl bg-emerald-950 border border-emerald-800 p-6 text-center">
+        <p className="font-bold text-emerald-300">Thank you!</p>
+        <p className="text-sm text-emerald-300 mt-1">
           Your enquiry has been received. Our team will be in touch shortly.
         </p>
       </div>
@@ -52,8 +52,8 @@ export function EnquiryForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
-  const label = 'block text-xs font-bold mb-1.5 text-blue-900';
+    'w-full rounded-lg border border-blue-800 bg-blue-900 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
+  const label = 'block text-xs font-bold mb-1.5 text-blue-200';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
@@ -98,7 +98,7 @@ export function EnquiryForm() {
       </div>
 
       {status === 'error' && (
-        <p className="text-sm text-red-600">Sorry, something went wrong. Please try again.</p>
+        <p className="text-sm text-red-400">Sorry, something went wrong. Please try again.</p>
       )}
 
       <button

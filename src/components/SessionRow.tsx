@@ -19,25 +19,25 @@ export function SessionRow({
   courseSlug?: string | null;
 }) {
   return (
-    <div className="flex items-center gap-4 border-b border-blue-100 py-4 last:border-0">
-      <div className="w-24 shrink-0 text-sm font-extrabold text-blue-900">
+    <div className="flex items-center gap-4 border-b border-blue-800 py-4 last:border-0">
+      <div className="w-24 shrink-0 text-sm font-extrabold text-blue-200">
         {formatDate(session.start_date)}
       </div>
       <div className="min-w-0 flex-1">
         {courseSlug ? (
-          <Link href={`/courses/${courseSlug}`} className="font-bold hover:text-orange-700">
+          <Link href={`/courses/${courseSlug}`} className="font-bold hover:text-orange-300">
             {courseTitle}
           </Link>
         ) : (
           <p className="font-bold">{courseTitle}</p>
         )}
-        <p className="mt-0.5 text-sm text-blue-900">
+        <p className="mt-0.5 text-sm text-blue-200">
           {session.location ?? 'TBA'}
           {session.start_time && ` • ${session.start_time.slice(0, 5)}`}
           {session.capacity != null && ` • ${session.seats_filled}/${session.capacity} seats`}
         </p>
       </div>
-      <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold capitalize text-blue-900">
+      <span className="rounded-full bg-blue-800 px-3 py-1 text-xs font-bold capitalize text-blue-200">
         {session.status}
       </span>
     </div>

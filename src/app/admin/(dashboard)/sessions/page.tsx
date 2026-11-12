@@ -19,11 +19,11 @@ export default async function AdminSessionsPage() {
   return (
     <div>
       <h1 className="text-3xl font-black tracking-tight">Sessions</h1>
-      <p className="mt-1 text-blue-900">{sessions.length} scheduled session{sessions.length === 1 ? '' : 's'}.</p>
+      <p className="mt-1 text-blue-200">{sessions.length} scheduled session{sessions.length === 1 ? '' : 's'}.</p>
 
-      <div className="mt-8 overflow-hidden rounded-2xl border border-blue-200 bg-white">
+      <div className="mt-8 overflow-hidden rounded-2xl border border-blue-800 bg-blue-900">
         <table className="w-full text-sm">
-          <thead className="bg-blue-50 text-left text-xs font-extrabold uppercase tracking-wide text-blue-900">
+          <thead className="bg-blue-950 text-left text-xs font-extrabold uppercase tracking-wide text-blue-200">
             <tr>
               <th className="px-5 py-3">Course</th>
               <th className="px-5 py-3">Start</th>
@@ -32,20 +32,20 @@ export default async function AdminSessionsPage() {
               <th className="px-5 py-3">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-blue-100">
+          <tbody className="divide-y divide-blue-800">
             {sessions.length === 0 ? (
-              <tr><td colSpan={5} className="px-5 py-10 text-center text-blue-900">No sessions yet.</td></tr>
+              <tr><td colSpan={5} className="px-5 py-10 text-center text-blue-200">No sessions yet.</td></tr>
             ) : (
               sessions.map((s) => (
-                <tr key={s.id} className="hover:bg-blue-50">
+                <tr key={s.id} className="hover:bg-blue-950">
                   <td className="px-5 py-3 font-bold">{s.courses?.title ?? '—'}</td>
-                  <td className="px-5 py-3 text-blue-900">{formatDate(s.start_date)}</td>
-                  <td className="px-5 py-3 text-blue-900">{s.location ?? '—'}</td>
-                  <td className="px-5 py-3 text-blue-900">
+                  <td className="px-5 py-3 text-blue-200">{formatDate(s.start_date)}</td>
+                  <td className="px-5 py-3 text-blue-200">{s.location ?? '—'}</td>
+                  <td className="px-5 py-3 text-blue-200">
                     {s.seats_filled}{s.capacity != null ? ` / ${s.capacity}` : ''}
                   </td>
                   <td className="px-5 py-3">
-                    <span className="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-extrabold capitalize text-blue-900">
+                    <span className="rounded-full bg-blue-800 px-2.5 py-1 text-xs font-extrabold capitalize text-blue-200">
                       {s.status}
                     </span>
                   </td>
