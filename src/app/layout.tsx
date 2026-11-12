@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-slate-50 text-blue-950">
-        <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <body className="min-h-full flex flex-col bg-blue-50 text-blue-950">
+        <header className="sticky top-0 z-20 border-b border-blue-200 bg-white/90 backdrop-blur">
           <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6">
             <Link href="/" className="text-xl font-black tracking-tight">
               KGS<span className="text-orange-600">Academy</span>
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-blue-900 bg-blue-950 text-slate-400">
+        <footer className="border-t border-blue-900 bg-blue-950 text-blue-300">
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <h4 className="font-bold text-white">KGS Academy</h4>

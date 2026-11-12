@@ -22,7 +22,7 @@ export default async function CoursesPage({
 
   const chip =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
-    'border-slate-200 bg-white text-blue-900 hover:border-orange-400';
+    'border-blue-200 bg-white text-blue-900 hover:border-orange-400';
   const chipActive =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
     'border-blue-900 bg-blue-900 text-white';
@@ -75,7 +75,7 @@ export default async function CoursesPage({
       )}
 
       {courses.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
+        <div className="mt-10 rounded-2xl border border-dashed border-blue-300 bg-white p-12 text-center">
           <p className="font-bold text-blue-900">
             {isSupabaseConfigured() ? 'No courses match your filters' : 'Connect Supabase to load the catalogue'}
           </p>

@@ -13,7 +13,7 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
   return (
     <Link
       href={`/courses/${course.slug}`}
-      className="group rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition"
+      className="group rounded-2xl border border-blue-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition"
     >
       <div className="h-32 bg-gradient-to-br from-orange-100 to-amber-100 flex items-end p-4">
         <span className="text-xs font-extrabold uppercase tracking-wide text-orange-700">

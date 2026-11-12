@@ -40,7 +40,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link
               key={item.href}
               href={item.href}
-              className="block rounded-lg px-3 py-2 text-sm font-bold text-blue-900 hover:bg-slate-100"
+              className="block rounded-lg px-3 py-2 text-sm font-bold text-blue-900 hover:bg-blue-100"
             >
               {item.label}
             </Link>

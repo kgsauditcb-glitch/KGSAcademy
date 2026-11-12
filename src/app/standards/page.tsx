@@ -16,7 +16,7 @@ export default async function StandardsPage() {
       </p>
 
       {standards.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
+        <div className="mt-10 rounded-2xl border border-dashed border-blue-300 bg-white p-12 text-center">
           <p className="font-bold text-blue-900">
             {isSupabaseConfigured() ? 'No standards yet' : 'Connect Supabase to load standards'}
           </p>
@@ -27,7 +27,7 @@ export default async function StandardsPage() {
             <Link
               key={s.id}
               href={`/courses?standard=${s.slug}`}
-              className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
+              className="rounded-2xl border border-blue-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
             >
               <p className="font-extrabold">{s.code}</p>
               <p className="mt-1 text-sm text-blue-900">{s.name}</p>

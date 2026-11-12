@@ -33,10 +33,10 @@ function LoginForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
+    'w-full rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6">
+    <form onSubmit={handleSubmit} className="mt-8 space-y-4 rounded-2xl border border-blue-200 bg-white p-6">
       <div>
         <label className="mb-1.5 block text-xs font-bold text-blue-900" htmlFor="email">Email</label>
         <input id="email" name="email" type="email" required className={input} autoComplete="email" />

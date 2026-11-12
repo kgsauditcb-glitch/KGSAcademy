@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
           <Link
             key={c.label}
             href={c.href}
-            className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
+            className="rounded-2xl border border-blue-200 bg-white p-5 hover:border-orange-400 hover:shadow-sm"
           >
             <p className="text-sm font-bold text-blue-900">{c.label}</p>
             <p className="mt-2 text-3xl font-black">{c.value}</p>
@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <div className="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center">
+      <div className="mt-10 rounded-2xl border border-dashed border-blue-300 bg-white p-8 text-center">
         <p className="font-bold text-blue-900">Course & session management</p>
         <p className="mt-1 text-sm text-blue-900">
           CRUD screens for courses, sessions and enquiries are scaffolded under /admin —

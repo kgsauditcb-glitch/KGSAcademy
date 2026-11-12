@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-950 via-blue-950 to-blue-900 text-white">
+      <section className="bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-orange-200">
@@ -30,7 +30,7 @@ export default async function Home() {
             <h1 className="mt-3 text-5xl font-black leading-[1.05] tracking-tight">
               Find the right course. At the right time.
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-slate-200">
+            <p className="mt-5 max-w-xl text-lg text-blue-200">
               Auditor and management-system training from KGS Academy — ISO 9001,
               ISO 14001, ISO 45001, ESG and more.
             </p>
@@ -70,7 +70,7 @@ export default async function Home() {
             View full calendar →
           </Link>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <div className="rounded-2xl border border-blue-200 bg-white p-6">
           {sessions.length === 0 ? (
             <EmptyState
               title={isSupabaseConfigured() ? 'No upcoming sessions' : 'Connect Supabase to load live data'}
@@ -114,7 +114,7 @@ export default async function Home() {
 
       {/* Standards */}
       {standards.length > 0 && (
-        <section className="border-y border-slate-200 bg-white">
+        <section className="border-y border-blue-200 bg-white">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <h2 className="text-3xl font-black tracking-tight">Browse by standard</h2>
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -122,7 +122,7 @@ export default async function Home() {
                 <Link
                   key={s.id}
                   href={`/courses?standard=${s.slug}`}
-                  className="rounded-2xl border border-slate-200 p-5 hover:border-orange-400 hover:shadow-sm"
+                  className="rounded-2xl border border-blue-200 p-5 hover:border-orange-400 hover:shadow-sm"
                 >
                   <p className="font-extrabold">{s.code}</p>
                   <p className="mt-1 text-sm text-blue-900">{s.name}</p>
@@ -143,7 +143,7 @@ export default async function Home() {
               send us an enquiry and we will get back to you.
             </p>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+          <div className="rounded-2xl border border-blue-200 bg-white p-6">
             <EnquiryForm />
           </div>
         </div>
@@ -154,7 +154,7 @@ export default async function Home() {
 
 function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
-    <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center">
+    <div className="rounded-xl border border-dashed border-blue-300 p-8 text-center">
       <p className="font-bold text-blue-900">{title}</p>
       {hint && <p className="mt-1 text-sm text-blue-900">{hint}</p>}
     </div>

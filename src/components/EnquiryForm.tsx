@@ -52,7 +52,7 @@ export function EnquiryForm() {
   }
 
   const input =
-    'w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
+    'w-full rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400';
   const label = 'block text-xs font-bold mb-1.5 text-blue-900';
 
   return (

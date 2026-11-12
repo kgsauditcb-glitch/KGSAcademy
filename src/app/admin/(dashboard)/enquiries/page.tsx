@@ -14,7 +14,7 @@ const STATUS_STYLES: Record<string, string> = {
   new: 'bg-blue-50 text-blue-700',
   in_progress: 'bg-amber-50 text-amber-700',
   converted: 'bg-emerald-50 text-emerald-700',
-  closed: 'bg-slate-100 text-blue-900',
+  closed: 'bg-blue-100 text-blue-900',
 };
 
 export default async function AdminEnquiriesPage() {
@@ -27,12 +27,12 @@ export default async function AdminEnquiriesPage() {
 
       <div className="mt-8 space-y-3">
         {enquiries.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center text-blue-900">
+          <div className="rounded-2xl border border-dashed border-blue-300 bg-white p-12 text-center text-blue-900">
             No enquiries yet.
           </div>
         ) : (
           enquiries.map((e) => (
-            <div key={e.id} className="rounded-2xl border border-slate-200 bg-white p-5">
+            <div key={e.id} className="rounded-2xl border border-blue-200 bg-white p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="font-bold">{e.name} <span className="font-medium text-blue-900">· {e.email}</span></p>

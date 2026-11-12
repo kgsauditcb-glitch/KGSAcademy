@@ -54,7 +54,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
               </span>
             )}
             {course.categories && (
-              <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-extrabold text-blue-900">
+              <span className="rounded-md bg-blue-100 px-2 py-1 text-xs font-extrabold text-blue-900">
                 {course.categories.name}
               </span>
             )}
@@ -66,7 +66,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
           )}
 
           <h2 className="mt-10 text-2xl font-black">Upcoming sessions</h2>
-          <div className="mt-4 rounded-2xl border border-slate-200 bg-white px-6">
+          <div className="mt-4 rounded-2xl border border-blue-200 bg-white px-6">
             {sessions.length === 0 ? (
               <p className="py-8 text-sm text-blue-900">No sessions scheduled yet.</p>
             ) : (
@@ -75,7 +75,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
           </div>
         </div>
 
-        <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-6 lg:sticky lg:top-24">
+        <aside className="h-fit rounded-2xl border border-blue-200 bg-white p-6 lg:sticky lg:top-24">
           <div className="text-2xl font-black">
             {inr(course.price_inr) ?? 'Enquire for pricing'}
             {inr(course.mrp_inr) && inr(course.mrp_inr) !== inr(course.price_inr) && (
@@ -89,7 +89,7 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
             <li>Mode: <b className="capitalize">{course.mode.replace('_', ' ')}</b></li>
             {course.certificate && <li>Certificate included</li>}
           </ul>
-          <div className="mt-6 border-t border-slate-100 pt-6">
+          <div className="mt-6 border-t border-blue-100 pt-6">
             <h3 className="font-bold">Interested?</h3>
             <div className="mt-3">
               <EnquiryForm />

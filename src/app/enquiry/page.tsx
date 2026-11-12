@@ -10,7 +10,7 @@ export default function EnquiryPage() {
         Individual enrolment, corporate group training or a custom programme — tell us
         what you are looking for and our team will get back to you.
       </p>
-      <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="mt-8 rounded-2xl border border-blue-200 bg-white p-6">
         <EnquiryForm />
       </div>
     </div>

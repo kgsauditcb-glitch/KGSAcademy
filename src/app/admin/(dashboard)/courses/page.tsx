@@ -24,9 +24,9 @@ export default async function AdminCoursesPage() {
         {/* TODO: "New course" button → /admin/courses/new form */}
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="mt-8 overflow-hidden rounded-2xl border border-blue-200 bg-white">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-extrabold uppercase tracking-wide text-blue-900">
+          <thead className="bg-blue-50 text-left text-xs font-extrabold uppercase tracking-wide text-blue-900">
             <tr>
               <th className="px-5 py-3">Title</th>
               <th className="px-5 py-3">Category</th>
@@ -35,12 +35,12 @@ export default async function AdminCoursesPage() {
               <th className="px-5 py-3">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-blue-100">
             {courses.length === 0 ? (
               <tr><td colSpan={5} className="px-5 py-10 text-center text-blue-900">No courses yet.</td></tr>
             ) : (
               courses.map((c) => (
-                <tr key={c.id} className="hover:bg-slate-50">
+                <tr key={c.id} className="hover:bg-blue-50">
                   <td className="px-5 py-3 font-bold">{c.title}</td>
                   <td className="px-5 py-3 text-blue-900">{c.categories?.name ?? '—'}</td>
                   <td className="px-5 py-3 text-blue-900">{MODE_LABELS[c.mode] ?? c.mode}</td>
@@ -51,7 +51,7 @@ export default async function AdminCoursesPage() {
                     <span className={`rounded-full px-2.5 py-1 text-xs font-extrabold ${
                       c.status === 'published' ? 'bg-emerald-50 text-emerald-700'
                       : c.status === 'draft' ? 'bg-amber-50 text-amber-700'
-                      : 'bg-slate-100 text-blue-900'
+                      : 'bg-blue-100 text-blue-900'
                     }`}>
                       {c.status}
                     </span>

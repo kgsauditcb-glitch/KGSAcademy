@@ -19,7 +19,7 @@ export function SessionRow({
   courseSlug?: string | null;
 }) {
   return (
-    <div className="flex items-center gap-4 border-b border-slate-100 py-4 last:border-0">
+    <div className="flex items-center gap-4 border-b border-blue-100 py-4 last:border-0">
       <div className="w-24 shrink-0 text-sm font-extrabold text-blue-900">
         {formatDate(session.start_date)}
       </div>
@@ -37,7 +37,7 @@ export function SessionRow({
           {session.capacity != null && ` • ${session.seats_filled}/${session.capacity} seats`}
         </p>
       </div>
-      <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold capitalize text-blue-900">
+      <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold capitalize text-blue-900">
         {session.status}
       </span>
     </div>
