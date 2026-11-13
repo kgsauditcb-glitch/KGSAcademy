@@ -2,7 +2,7 @@
 //   npx supabase gen types typescript --project-id <ref> > src/types/database.ts
 // For now this is a minimal hand-written placeholder covering the core tables.
 
-export type AppRole = 'admin' | 'staff' | 'student';
+export type AppRole = 'admin' | 'staff' | 'student' | 'super_admin' | (string & {});
 export type CourseMode = 'classroom' | 'live_online' | 'hybrid' | 'self_paced';
 export type CourseStatus = 'draft' | 'published' | 'archived';
 export type SessionStatus = 'scheduled' | 'open' | 'full' | 'completed' | 'cancelled';
