@@ -1,21 +1,37 @@
 import Link from 'next/link';
 import type { CourseWithRelations } from '@/lib/data';
+import { offerBadgeLabel, offerDiscount } from '@/lib/data';
+import type { Offer } from '@/types/database';
 
 function inr(value: number | null) {
   if (value == null) return null;
   return `₹${value.toLocaleString('en-IN')}`;
 }
 
-export function CourseCard({ course }: { course: CourseWithRelations }) {
+export function CourseCard({
+  course,
+  offer,
+}: {
+  course: CourseWithRelations;
+  offer?: Offer | null;
+}) {
   const price = inr(course.price_inr);
-  const mrp = inr(course.mrp_inr);
+  const finalPrice =
+    offer && course.price_inr != null
+      ? inr(Math.max(0, course.price_inr - offerDiscount(offer, course.price_inr)))
+      : price;
 
   return (
     <Link
       href={`/courses/${course.slug}`}
       className="group rounded-2xl border border-(--border) bg-(--bg-card) shadow-sm overflow-hidden hover:shadow-md transition"
     >
-      <div className="h-32 bg-gradient-to-br from-orange-900 to-amber-900 flex items-end p-4">
+      <div className="relative h-32 bg-gradient-to-br from-orange-900 to-amber-900 flex items-end p-4">
+        {offer && (
+          <span className="absolute right-3 top-3 rounded-full bg-orange-500 px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-white shadow">
+            {offerBadgeLabel(offer)}
+          </span>
+        )}
         <span className="text-xs font-extrabold uppercase tracking-wide text-orange-300">
           {course.categories?.name ?? 'Course'}
           {course.featured && ' • Featured'}
@@ -33,11 +49,18 @@ export function CourseCard({ course }: { course: CourseWithRelations }) {
           <span className="capitalize">{course.mode.replace('_', ' ')}</span>
           {course.certificate && <span>Certificate</span>}
         </div>
-        {price && (
+        {finalPrice && (
           <div className="mt-4 font-extrabold">
-            {price}
-            {mrp && mrp !== price && (
-              <span className="ml-2 text-sm font-medium text-(--text-secondary) line-through">{mrp}</span>
+            {finalPrice}
+            {price && finalPrice !== price && (
+              <span className="ml-2 text-sm font-medium text-(--text-secondary) line-through">
+                {price}
+              </span>
+            )}
+            {offer?.code && (
+              <span className="ml-2 rounded bg-(--bg-subtle) px-1.5 py-0.5 text-[10px] font-bold text-(--text-secondary)">
+                {offer.code}
+              </span>
             )}
           </div>
         )}

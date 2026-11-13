@@ -1,6 +1,6 @@
 import { connection } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import type { Course, CourseSession, Enquiry, Profile, Standard, Category } from '@/types/database';
+import type { Course, CourseSession, Enquiry, Offer, Profile, Standard, Category } from '@/types/database';
 
 export function isSupabaseConfigured() {
   return Boolean(
@@ -196,4 +196,59 @@ export async function getCurrentProfile(): Promise<Profile | null> {
     .eq('id', user.id)
     .single();
   return data;
+}
+
+// ---------------------------------------------------------------------------
+// Offers / promotions
+// ---------------------------------------------------------------------------
+
+export async function getActiveOffers(): Promise<Offer[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('offers')
+    .select('*')
+    .order('sort_order')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  // RLS already filters to active + in-date for public reads.
+  return (data ?? []) as Offer[];
+}
+
+export async function getAllOffers(): Promise<Offer[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('offers')
+    .select('*, courses ( title, slug )')
+    .order('sort_order')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as (Offer & { courses: { title: string; slug: string } | null })[];
+}
+
+// Best offer applicable to a course: course-specific beats global, higher % wins.
+export function offerForCourse(offers: Offer[], courseId: string): Offer | null {
+  const applicable = offers.filter(
+    (o) => o.is_active && (o.course_id === null || o.course_id === courseId),
+  );
+  if (applicable.length === 0) return null;
+  const score = (o: Offer) =>
+    (o.course_id === courseId ? 1000 : 0) +
+    (o.discount_type === 'percent' ? o.discount_value : 0);
+  return applicable.sort((a, b) => score(b) - score(a))[0];
+}
+
+export function offerDiscount(offer: Offer, price: number): number {
+  const raw =
+    offer.discount_type === 'percent'
+      ? (price * offer.discount_value) / 100
+      : offer.discount_value;
+  return Math.min(Math.max(raw, 0), price);
+}
+
+export function offerBadgeLabel(offer: Offer): string {
+  return offer.discount_type === 'percent'
+    ? `${offer.discount_value}% OFF`
+    : `₹${offer.discount_value.toLocaleString('en-IN')} OFF`;
 }

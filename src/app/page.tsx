@@ -8,15 +8,21 @@ import {
   getFeaturedCourses,
   getUpcomingSessions,
   getStandards,
+  getActiveOffers,
+  offerForCourse,
+  offerBadgeLabel,
   isSupabaseConfigured,
 } from '@/lib/data';
 
 export default async function Home() {
-  const [courses, sessions, standards] = await Promise.all([
+  const [courses, sessions, standards, offers] = await Promise.all([
     getFeaturedCourses(),
     getUpcomingSessions(5),
     getStandards(),
+    getActiveOffers(),
   ]);
+
+  const bannerOffers = offers.filter((o) => o.banner_text);
 
   return (
     <>
@@ -58,6 +64,30 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Promo banner strip */}
+      {bannerOffers.length > 0 && (
+        <section className="border-b border-(--border) bg-(--bg-card)">
+          <div className="mx-auto flex max-w-6xl gap-4 overflow-x-auto px-6 py-4">
+            {bannerOffers.map((o) => (
+              <div
+                key={o.id}
+                className="flex shrink-0 items-center gap-4 rounded-2xl bg-gradient-to-r from-orange-700 to-amber-600 px-5 py-3 text-white shadow-sm"
+              >
+                <span className="text-2xl font-black">{offerBadgeLabel(o)}</span>
+                <div className="text-sm">
+                  <p className="font-bold leading-tight">{o.banner_text}</p>
+                  {o.ends_at && (
+                    <p className="text-xs text-orange-100">
+                      Valid till {new Date(o.ends_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Today's sessions */}
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -107,7 +137,9 @@ export default async function Home() {
           />
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.map((c) => <CourseCard key={c.id} course={c} />)}
+            {courses.map((c) => (
+              <CourseCard key={c.id} course={c} offer={offerForCourse(offers, c.id)} />
+            ))}
           </div>
         )}
       </section>
@@ -127,6 +159,55 @@ export default async function Home() {
                   <p className="font-extrabold">{s.code}</p>
                   <p className="mt-1 text-sm text-(--text-secondary)">{s.name}</p>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Offers */}
+      {offers.length > 0 && (
+        <section className="border-t border-(--border) bg-(--bg-card)">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <div className="mb-6 flex items-end justify-between">
+              <div>
+                <h2 className="text-3xl font-black tracking-tight">Offers & discounts</h2>
+                <p className="mt-1 text-(--text-secondary)">Limited-time deals on courses and workshops.</p>
+              </div>
+              <Link href="/courses" className="text-sm font-bold text-(--text-secondary) hover:text-orange-300">
+                Browse courses →
+              </Link>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {offers.map((o) => (
+                <div
+                  key={o.id}
+                  className="relative overflow-hidden rounded-2xl border border-(--border) bg-(--bg-page) p-6"
+                >
+                  <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-orange-500/15" />
+                  <span className="inline-block rounded-full bg-orange-950 px-3 py-1 text-xs font-black text-orange-300">
+                    {offerBadgeLabel(o)}
+                  </span>
+                  <h3 className="mt-3 text-lg font-bold">{o.title}</h3>
+                  {o.description && (
+                    <p className="mt-1 text-sm text-(--text-secondary)">{o.description}</p>
+                  )}
+                  <div className="mt-4 flex items-center justify-between text-xs text-(--text-secondary)">
+                    {o.code ? (
+                      <span className="rounded-lg border border-dashed border-orange-400 px-2 py-1 font-mono font-bold text-orange-300">
+                        {o.code}
+                      </span>
+                    ) : (
+                      <span>Auto-applied</span>
+                    )}
+                    {o.ends_at && (
+                      <span>
+                        Valid till{' '}
+                        {new Date(o.ends_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

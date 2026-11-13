@@ -2,7 +2,7 @@ export const instant = false;
 
 import Link from 'next/link';
 import { CourseCard } from '@/components/CourseCard';
-import { getCourses, getCategories, getStandards, isSupabaseConfigured } from '@/lib/data';
+import { getCourses, getCategories, getStandards, getActiveOffers, offerForCourse, isSupabaseConfigured } from '@/lib/data';
 
 export const metadata = { title: 'Courses' };
 
@@ -14,10 +14,11 @@ export default async function CoursesPage({
   const standard = typeof params.standard === 'string' ? params.standard : undefined;
   const q = typeof params.q === 'string' ? params.q : undefined;
 
-  const [courses, categories, standards] = await Promise.all([
+  const [courses, categories, standards, offers] = await Promise.all([
     getCourses({ categorySlug: category, standardSlug: standard, search: q }),
     getCategories(),
     getStandards(),
+    getActiveOffers(),
   ]);
 
   const chip =
@@ -87,7 +88,9 @@ export default async function CoursesPage({
         </div>
       ) : (
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((c) => <CourseCard key={c.id} course={c} />)}
+          {courses.map((c) => (
+            <CourseCard key={c.id} course={c} offer={offerForCourse(offers, c.id)} />
+          ))}
         </div>
       )}
     </div>

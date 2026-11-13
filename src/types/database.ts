@@ -84,3 +84,20 @@ export interface Enquiry {
   created_at: string;
   updated_at: string;
 }
+
+export interface Offer {
+  id: string;
+  title: string;
+  description: string | null;
+  code: string | null;
+  discount_type: 'percent' | 'fixed';
+  discount_value: number;
+  banner_text: string | null;
+  course_id: string | null;
+  starts_at: string | null;
+  ends_at: string | null;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
