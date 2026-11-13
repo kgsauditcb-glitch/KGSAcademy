@@ -42,30 +42,53 @@ export async function getCourses(filters?: {
   search?: string;
 }): Promise<CourseWithRelations[]> {
   if (!isSupabaseConfigured()) return [];
+
   const supabase = await createClient();
+
+  // Use INNER JOIN when a relation is being filtered.
+  const categoryJoin = filters?.categorySlug ? '!inner' : '';
+  const standardJoin = filters?.standardSlug ? '!inner' : '';
+
+  const select = `
+    *,
+    categories${categoryJoin} ( name, slug ),
+    standards${standardJoin} ( code, name, slug )
+  `;
 
   let query = supabase
     .from('courses')
-    .select(COURSE_SELECT)
+    .select(select)
     .eq('status', 'published')
     .order('created_at', { ascending: false });
 
   if (filters?.categorySlug) {
     query = query.eq('categories.slug', filters.categorySlug);
   }
+
   if (filters?.standardSlug) {
     query = query.eq('standards.slug', filters.standardSlug);
   }
+
   if (filters?.mode) {
     query = query.eq('mode', filters.mode);
   }
-  if (filters?.search) {
-    query = query.or(`title.ilike.%${filters.search}%,summary.ilike.%${filters.search}%`);
+
+  if (filters?.search?.trim()) {
+    const search = filters.search.trim();
+
+    query = query.or(
+      `title.ilike.%${search}%,summary.ilike.%${search}%`
+    );
   }
 
   const { data, error } = await query;
-  if (error) throw error;
-  return (data ?? []) as CourseWithRelations[];
+
+  if (error) {
+    console.error('Error fetching courses:', error);
+    throw error;
+  }
+
+ return (data ?? []) as unknown as CourseWithRelations[];
 }
 
 export async function getCourseBySlug(slug: string) {

@@ -40,27 +40,58 @@ export default async function Home() {
               Auditor and management-system training from KGS Academy — ISO 9001,
               ISO 14001, ISO 45001, ESG and more.
             </p>
-            <div className="mt-8 flex max-w-xl gap-2 rounded-2xl bg-white/15 p-1.5">
-              <input
-                placeholder="What do you want to learn? e.g. Internal Audit, ISO 9001, ESG…"
-                className="flex-1 rounded-xl px-4 py-3 text-sm text-white outline-none"
-              />
-              <Link
-                href="/courses"
-                className="rounded-xl bg-orange-700 px-5 py-3 text-sm font-bold text-white hover:bg-orange-800"
-              >
-                Explore courses
-              </Link>
-            </div>
+            <form
+  action="/courses"
+  method="GET"
+  className="mt-8 flex max-w-xl gap-2 rounded-2xl bg-white/15 p-1.5"
+>
+  <input
+    type="search"
+    name="q"
+    placeholder="What do you want to learn? e.g. Internal Audit, ISO 9001, ESG…"
+    className="min-w-0 flex-1 rounded-xl bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/60"
+  />
+
+  <button
+    type="submit"
+    className="shrink-0 rounded-xl bg-orange-700 px-5 py-3 text-sm font-bold text-white hover:bg-orange-800"
+  >
+    Explore courses
+  </button>
+</form>
           </div>
           <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur">
             <h3 className="font-bold">Academy at a glance</h3>
-            <div className="mt-4 divide-y divide-white/10 text-sm">
-              <div className="flex justify-between py-3"><span>Courses & programmes</span><b>{courses.length || '—'}</b></div>
-              <div className="flex justify-between py-3"><span>Upcoming sessions</span><b>{sessions.length || '—'}</b></div>
-              <div className="flex justify-between py-3"><span>Standards covered</span><b>{standards.length || '—'}</b></div>
-              <div className="flex justify-between py-3"><span>Delivery modes</span><b>Classroom • Live Online</b></div>
-            </div>
+           <div className="mt-4 divide-y divide-white/10 text-sm">
+  <Link
+    href="#featured-courses"
+    className="flex justify-between py-3 transition hover:text-orange-200"
+  >
+    <span>Courses & programmes</span>
+    <b className="text-orange-200">{courses.length || '—'} </b>
+  </Link>
+
+  <Link
+    href="#upcoming-sessions"
+    className="flex justify-between py-3 transition hover:text-orange-200"
+  >
+    <span>Upcoming sessions</span>
+    <b className="text-orange-200">{sessions.length || '—'} </b>
+  </Link>
+
+  <Link
+    href="#standards"
+    className="flex justify-between py-3 transition hover:text-orange-200"
+  >
+    <span>Standards covered</span>
+    <b className="text-orange-200">{standards.length || '—'} </b>
+  </Link>
+
+  <div className="flex justify-between py-3">
+    <span>Delivery modes</span>
+    <b>Classroom • Live Online</b>
+  </div>
+</div>
           </div>
         </div>
       </section>
@@ -90,7 +121,10 @@ export default async function Home() {
       )}
 
       {/* Today's sessions */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section
+  id='upcoming-sessions'
+  className="mx-auto max-w-6xl px-6 py-16"
+>
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">What&apos;s happening</h2>
@@ -120,7 +154,10 @@ export default async function Home() {
       </section>
 
       {/* Featured courses */}
-      <section className="mx-auto max-w-6xl px-6 pb-16">
+      <section
+  id="featured-courses"
+  className="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20"
+>
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-black tracking-tight">Explore the Academy</h2>
@@ -146,7 +183,10 @@ export default async function Home() {
 
       {/* Standards */}
       {standards.length > 0 && (
-        <section className="border-y border-(--border) bg-(--bg-card)">
+        <section
+  id="standards"
+  className="border-y border-(--border) bg-(--bg-card) scroll-mt-20"
+>
           <div className="mx-auto max-w-6xl px-6 py-16">
             <h2 className="text-3xl font-black tracking-tight">Browse by standard</h2>
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
