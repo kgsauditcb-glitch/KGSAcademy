@@ -215,7 +215,9 @@ export async function getActiveOffers(): Promise<Offer[]> {
   return (data ?? []) as Offer[];
 }
 
-export async function getAllOffers(): Promise<Offer[]> {
+export type OfferWithCourse = Offer & { courses: { title: string; slug: string } | null };
+
+export async function getAllOffers(): Promise<OfferWithCourse[]> {
   if (!isSupabaseConfigured()) return [];
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -224,7 +226,7 @@ export async function getAllOffers(): Promise<Offer[]> {
     .order('sort_order')
     .order('created_at', { ascending: false });
   if (error) throw error;
-  return (data ?? []) as (Offer & { courses: { title: string; slug: string } | null })[];
+  return (data ?? []) as OfferWithCourse[];
 }
 
 // Best offer applicable to a course: course-specific beats global, higher % wins.
