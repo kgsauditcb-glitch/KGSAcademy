@@ -36,6 +36,9 @@ export async function getFeaturedCourses(): Promise<CourseWithRelations[]> {
 }
 
 export async function getCourses(filters?: {
+  categorySlugs?: string[];
+  standardSlugs?: string[];
+  // Keep old options temporarily for backward compatibility.
   categorySlug?: string;
   standardSlug?: string;
   mode?: string;
@@ -45,9 +48,24 @@ export async function getCourses(filters?: {
 
   const supabase = await createClient();
 
-  // Use INNER JOIN when a relation is being filtered.
-  const categoryJoin = filters?.categorySlug ? '!inner' : '';
-  const standardJoin = filters?.standardSlug ? '!inner' : '';
+  // Support both new multiple selections and existing single selections.
+  const categorySlugs =
+    filters?.categorySlugs?.length
+      ? filters.categorySlugs
+      : filters?.categorySlug
+        ? [filters.categorySlug]
+        : [];
+
+  const standardSlugs =
+    filters?.standardSlugs?.length
+      ? filters.standardSlugs
+      : filters?.standardSlug
+        ? [filters.standardSlug]
+        : [];
+
+  // Use INNER JOIN when filtering related tables.
+  const categoryJoin = categorySlugs.length > 0 ? '!inner' : '';
+  const standardJoin = standardSlugs.length > 0 ? '!inner' : '';
 
   const select = `
     *,
@@ -61,12 +79,14 @@ export async function getCourses(filters?: {
     .eq('status', 'published')
     .order('created_at', { ascending: false });
 
-  if (filters?.categorySlug) {
-    query = query.eq('categories.slug', filters.categorySlug);
+  // Multiple category selections.
+  if (categorySlugs.length > 0) {
+    query = query.in('categories.slug', categorySlugs);
   }
 
-  if (filters?.standardSlug) {
-    query = query.eq('standards.slug', filters.standardSlug);
+  // Multiple standard selections.
+  if (standardSlugs.length > 0) {
+    query = query.in('standards.slug', standardSlugs);
   }
 
   if (filters?.mode) {
@@ -88,7 +108,7 @@ export async function getCourses(filters?: {
     throw error;
   }
 
- return (data ?? []) as unknown as CourseWithRelations[];
+  return (data ?? []) as unknown as CourseWithRelations[];
 }
 
 export async function getCourseBySlug(slug: string) {

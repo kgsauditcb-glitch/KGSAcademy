@@ -10,12 +10,26 @@ export default async function CoursesPage({
   searchParams,
 }: PageProps<'/courses'>) {
   const params = await searchParams;
-  const category = typeof params.category === 'string' ? params.category : undefined;
-  const standard = typeof params.standard === 'string' ? params.standard : undefined;
-  const q = typeof params.q === 'string' ? params.q : undefined;
+const categoriesSelected = Array.isArray(params.category)
+  ? params.category
+  : params.category
+    ? [params.category]
+    : [];
+
+const standardsSelected = Array.isArray(params.standard)
+  ? params.standard
+  : params.standard
+    ? [params.standard]
+    : [];
+
+const q = typeof params.q === 'string' ? params.q : undefined;
 
   const [courses, categories, standards, offers] = await Promise.all([
-    getCourses({ categorySlug: category, standardSlug: standard, search: q }),
+    getCourses({
+  categorySlugs: categoriesSelected,
+  standardSlugs: standardsSelected,
+  search: q,
+}),
     getCategories(),
     getStandards(),
     getActiveOffers(),
@@ -27,6 +41,31 @@ export default async function CoursesPage({
   const chipActive =
     'rounded-full border px-4 py-1.5 text-sm font-bold whitespace-nowrap ' +
     'border-orange-700 bg-orange-700 text-white';
+
+const chipClear =
+  'ml-2 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 ' +
+  'text-xs font-bold text-(--text-secondary) ' +
+  'border border-(--border) hover:bg-(--bg-card) ' +
+  'hover:text-red-500 hover:border-red-400 transition-all';
+
+    const filterHref = (
+  selectedCategories: string[],
+  selectedStandards: string[]
+) => {
+  const search = new URLSearchParams();
+
+  selectedCategories.forEach((slug) => search.append('category', slug));
+  selectedStandards.forEach((slug) => search.append('standard', slug));
+
+  if (q) search.set('q', q);
+
+  return `/courses?${search.toString()}`;
+};
+
+const toggleFilter = (selected: string[], slug: string) =>
+  selected.includes(slug)
+    ? selected.filter((item) => item !== slug)
+    : [...selected, slug];
 
     
 const visibleCategories = q
@@ -53,41 +92,79 @@ const visibleStandards = q
         Browse the full KGS Academy catalogue by category, standard or delivery mode.
       </p>
 
-    {/* Category filter */}
+{/* Category filter */}
 {visibleCategories.length > 0 && (
-  <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
-    <Link href="/courses" className={!category ? chipActive : chip}>
+  <div className="mt-8 flex flex-wrap items-center gap-2">
+    <Link
+      href={filterHref([], standardsSelected)}
+      className={categoriesSelected.length === 0 ? chipActive : chip}
+    >
       All
     </Link>
 
-    {visibleCategories.map((c) => (
+    {visibleCategories.map((c) => {
+      const isSelected = categoriesSelected.includes(c.slug);
+
+      return (
+        <Link
+          key={c.id}
+          href={filterHref(
+            toggleFilter(categoriesSelected, c.slug),
+            standardsSelected
+          )}
+          className={isSelected ? chipActive : chip}
+        >
+          {c.name}
+        </Link>
+      );
+    })}
+
+    {categoriesSelected.length > 0 && (
       <Link
-        key={c.id}
-        href={`/courses?category=${c.slug}${q ? `&q=${encodeURIComponent(q)}` : ''}`}
-        className={category === c.slug ? chipActive : chip}
-      >
-        {c.name}
-      </Link>
-    ))}
+  href={filterHref([], standardsSelected)}
+  className={chipClear}
+>
+  <span className="inline-flex items-center gap-1.5">
+    
+    Clear
+  </span>
+</Link>
+    )}
   </div>
 )}
 
-    {/* Standard filter */}
+{/* Standard filter */}
 {visibleStandards.length > 0 && (
-  <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-    <span className="self-center text-xs font-extrabold uppercase tracking-wide text-(--text-secondary)">
+  <div className="mt-4 flex flex-wrap items-center gap-2">
+    <span className="text-xs font-extrabold uppercase tracking-wide text-(--text-secondary)">
       Standard:
     </span>
 
-    {visibleStandards.map((s) => (
-      <Link
-        key={s.id}
-        href={`/courses?standard=${s.slug}${q ? `&q=${encodeURIComponent(q)}` : ''}`}
-        className={standard === s.slug ? chipActive : chip}
-      >
-        {s.code}
-      </Link>
-    ))}
+    {visibleStandards.map((s) => {
+      const isSelected = standardsSelected.includes(s.slug);
+
+      return (
+        <Link
+          key={s.id}
+          href={filterHref(
+            categoriesSelected,
+            toggleFilter(standardsSelected, s.slug)
+          )}
+          className={isSelected ? chipActive : chip}
+        >
+          {s.code}
+        </Link>
+      );
+    })}
+
+    {standardsSelected.length > 0 && (
+     <Link
+  href={filterHref(categoriesSelected, [])}
+  className={chipClear}
+>
+   Clear
+</Link>
+    )}
   </div>
 )}
 
