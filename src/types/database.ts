@@ -72,6 +72,8 @@ export interface CourseSession {
   updated_at: string;
 }
 
+
+
 export interface Enquiry {
   id: string;
   name: string;
@@ -81,6 +83,7 @@ export interface Enquiry {
   course_interest: string | null;
   message: string | null;
   status: EnquiryStatus;
+   internal_notes: string | null;
   created_at: string;
   updated_at: string;
 }
