@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CourseCard } from '@/components/CourseCard';
 import { SessionRow } from '@/components/SessionRow';
 import { EnquiryForm } from '@/components/EnquiryForm';
+import { connection } from 'next/server';
 import {
   getFeaturedCourses,
   getUpcomingSessions,
@@ -15,6 +16,9 @@ import {
 } from '@/lib/data';
 
 export default async function Home() {
+  
+  await connection();
+
   const [courses, sessions, standards, offers] = await Promise.all([
     getFeaturedCourses(),
     getUpcomingSessions(5),
