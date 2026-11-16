@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -36,7 +37,6 @@ async function requireAdmin() {
 
 function getFormValue(formData: FormData, key: string) {
   const value = formData.get(key);
-
   return typeof value === 'string' ? value.trim() : '';
 }
 
@@ -53,7 +53,9 @@ export async function updateEnquiry(
 
   if (!ENQUIRY_STATUSES.includes(status as EnquiryStatus)) {
     redirect(
-      `${editUrl}?error=${encodeURIComponent('Please select a valid enquiry status.')}`,
+      `${editUrl}?error=${encodeURIComponent(
+        'Please select a valid enquiry status.',
+      )}`,
     );
   }
 
@@ -62,15 +64,24 @@ export async function updateEnquiry(
     .update({
       status: status as EnquiryStatus,
       internal_notes: internalNotes || null,
+      updated_at: new Date().toISOString(),
     })
     .eq('id', enquiryId)
     .select('id')
     .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
+    console.error('Update enquiry error:', error);
+
+    redirect(
+      `${editUrl}?error=${encodeURIComponent(error.message)}`,
+    );
+  }
+
+  if (!data) {
     redirect(
       `${editUrl}?error=${encodeURIComponent(
-        error?.message ?? 'Enquiry not found or could not be updated.',
+        'Enquiry was not updated. Check your Supabase permissions.',
       )}`,
     );
   }
