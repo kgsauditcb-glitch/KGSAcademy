@@ -3,8 +3,11 @@ export const instant = false;
 
 import { connection } from 'next/server';
 import Link from 'next/link';
-import { getEnquiries } from '@/lib/data';
-import EnquiryCard from './EnquiryCard';
+import {
+  getEnquiries,
+  getEnquiryActivityHistory,
+} from '@/lib/data';
+import EnquiryCard, { EnquiryFeedback } from './EnquiryCard';
 import type { EnquiryStatus } from '@/types/database';
 
 export const metadata = {
@@ -35,10 +38,14 @@ export default async function AdminEnquiriesPage({
 }: PageProps) {
   await connection();
 
-  const [enquiries, params] = await Promise.all([
-    getEnquiries(),
-    searchParams,
-  ]);
+ const [enquiries, params] = await Promise.all([
+  getEnquiries(),
+  searchParams,
+]);
+
+const activities = await getEnquiryActivityHistory(
+  enquiries.map((enquiry) => enquiry.id),
+);
 
   const selectedStatus = STATUS_OPTIONS.some(
     (item) => item.value === params.status,
@@ -80,18 +87,11 @@ export default async function AdminEnquiriesPage({
         </p>
       </div>
 
-      {/* Feedback */}
-      {params.success === 'updated' && (
-        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-400">
-          Enquiry updated successfully.
-        </div>
-      )}
-
-      {params.error && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-          {params.error}
-        </div>
-      )}
+    {/* Feedback */}
+<EnquiryFeedback
+  success={params.success}
+  error={params.error}
+/>
 
       {/* Status-wise clickable counts */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -168,12 +168,15 @@ export default async function AdminEnquiriesPage({
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredEnquiries.map((enquiry) => (
-              <EnquiryCard
-                key={enquiry.id}
-                enquiry={enquiry}
-              />
-            ))}
+          {filteredEnquiries.map((enquiry) => (
+  <EnquiryCard
+    key={enquiry.id}
+    enquiry={enquiry}
+    activities={activities.filter(
+      (activity) => activity.enquiry_id === enquiry.id,
+    )}
+  />
+))}
           </div>
         )}
       </div>
