@@ -109,11 +109,20 @@ export default async function AdminCoursesPage({
                     {MODE_LABELS[course.mode] ?? course.mode}
                   </td>
 
-                  <td className="px-5 py-4 text-(--text-secondary)">
-                    {course.price_inr != null
-                      ? `₹${Number(course.price_inr).toLocaleString('en-IN')}`
-                      : '—'}
-                  </td>
+                 <td className="px-5 py-4 text-(--text-secondary)">
+  {course.on_demand ? (
+    <span className="font-semibold text-orange-400">
+      Price on Request
+    </span>
+  ) : course.price_inr != null ? (
+    new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: course.currency_code || 'INR',
+    }).format(Number(course.price_inr))
+  ) : (
+    '—'
+  )}
+</td>
 
                   <td className="px-5 py-4">
                     <span

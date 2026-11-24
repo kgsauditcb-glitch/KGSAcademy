@@ -1,3 +1,4 @@
+
 export const instant = false;
 
 import Link from 'next/link';
@@ -10,6 +11,16 @@ export async function generateMetadata({ params }: PageProps<'/courses/[slug]'>)
   const { slug } = await params;
   const course = await getCourseBySlug(slug);
   return { title: course?.title ?? 'Course' };
+}
+
+function formatPrice(value: number | null, currency: string) {
+  if (value == null) return null;
+
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 export default async function CourseDetailPage({ params }: PageProps<'/courses/[slug]'>) {
@@ -37,7 +48,9 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
     .filter((s) => s.status !== 'cancelled')
     .sort((a, b) => a.start_date.localeCompare(b.start_date));
 
-  const inr = (v: number | null) => (v == null ? null : `₹${v.toLocaleString('en-IN')}`);
+  const currency = course.currency_code || 'INR';
+  const price = formatPrice(course.price_inr, currency);
+  const mrp = formatPrice(course.mrp_inr, currency);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
@@ -59,13 +72,17 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
               </span>
             )}
           </div>
+
           <h1 className="mt-3 text-4xl font-black tracking-tight">{course.title}</h1>
+
           {course.summary && <p className="mt-3 text-lg text-(--text-secondary)">{course.summary}</p>}
+
           {course.description && (
             <p className="mt-6 whitespace-pre-line text-(--text-secondary)">{course.description}</p>
           )}
 
           <h2 className="mt-10 text-2xl font-black">Upcoming sessions</h2>
+
           <div className="mt-4 rounded-2xl border border-(--border) bg-(--bg-card) px-6">
             {sessions.length === 0 ? (
               <p className="py-8 text-sm text-(--text-secondary)">No sessions scheduled yet.</p>
@@ -77,18 +94,27 @@ export default async function CourseDetailPage({ params }: PageProps<'/courses/[
 
         <aside className="h-fit rounded-2xl border border-(--border) bg-(--bg-card) p-6 lg:sticky lg:top-24">
           <div className="text-2xl font-black">
-            {inr(course.price_inr) ?? 'Enquire for pricing'}
-            {inr(course.mrp_inr) && inr(course.mrp_inr) !== inr(course.price_inr) && (
+            {course.on_demand ? (
+              <span className="text-orange-400">Price on Request</span>
+            ) : price ? (
+              price
+            ) : (
+              'Enquire for pricing'
+            )}
+
+            {!course.on_demand && mrp && mrp !== price && (
               <span className="ml-2 text-base font-medium text-(--text-secondary) line-through">
-                {inr(course.mrp_inr)}
+                {mrp}
               </span>
             )}
           </div>
+
           <ul className="mt-4 space-y-2 text-sm text-(--text-secondary)">
             {course.duration_days && <li>Duration: <b>{course.duration_days} days</b></li>}
             <li>Mode: <b className="capitalize">{course.mode.replace('_', ' ')}</b></li>
             {course.certificate && <li>Certificate included</li>}
           </ul>
+
           <div className="mt-6 border-t border-(--border) pt-6">
             <h3 className="font-bold">Interested?</h3>
             <div className="mt-3">
