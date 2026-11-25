@@ -131,6 +131,7 @@ export default function EnquiryCard({
 
             <Link
               href={`/admin/enquiries/${enquiry.id}/edit`}
+               prefetch={false}
               className="inline-flex items-center gap-2 rounded-xl border border-(--border) px-4 py-2.5 text-sm font-semibold text-(--text-primary) transition hover:border-orange-500 hover:text-orange-500"
             >
               Edit
@@ -271,6 +272,50 @@ export default function EnquiryCard({
             </p>
           </div>
         )}
+
+        {/* Internal Notes */}
+{enquiry.internal_notes && (
+  <div className="mt-5 rounded-xl border border-violet-500/20 bg-violet-500/5 p-4">
+    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-violet-400">
+      Internal Notes
+    </p>
+
+    <p className="whitespace-pre-wrap text-sm leading-6 text-(--text-secondary)">
+      {enquiry.internal_notes}
+    </p>
+  </div>
+)}
+
+{/* Closure Comments */}
+{activities
+  .filter((activity) => activity.note?.includes('Closure Comment:'))
+  .map((activity) => {
+    const closureComment = activity.note!
+      .split('Closure Comment:')
+      .slice(1)
+      .join('Closure Comment:')
+      .split('Internal Notes:')[0]
+      .trim();
+
+    if (!closureComment) return null;
+
+    return (
+      <div
+        key={`closure-${activity.id}`}
+        className="mt-4 rounded-xl border border-rose-500/20 bg-rose-500/5 p-4"
+      >
+        <p className="mb-2 text-xs font-bold uppercase tracking-wider text-rose-400">
+          Closure Comment
+        </p>
+
+        <p className="whitespace-pre-wrap text-sm leading-6 text-(--text-secondary)">
+          {closureComment}
+        </p>
+
+      
+      </div>
+    );
+  })}
 
       
 

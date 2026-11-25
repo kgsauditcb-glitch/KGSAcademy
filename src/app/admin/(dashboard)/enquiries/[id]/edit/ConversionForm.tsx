@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { convertEnquiry, updateEnquiry } from '../../actions';
 import type { EnquiryStatus } from '@/types/database';
 
@@ -51,8 +51,28 @@ export function EnquiryStatusWorkflow({
   sessions,
 }: WorkflowProps) {
   const [status, setStatus] = useState<EnquiryStatus>(currentStatus);
+const [notes, setNotes] = useState(internalNotes);
+const [closureComment, setClosureComment] = useState('');
 
-  const [closureComment, setClosureComment] = useState('');
+const [courseId, setCourseId] = useState('');
+const [sessionId, setSessionId] = useState('');
+
+useEffect(() => {
+  const timeoutId = setTimeout(() => {
+    setStatus(currentStatus);
+    setNotes(internalNotes);
+  }, 0);
+
+  return () => clearTimeout(timeoutId);
+}, [currentStatus, internalNotes]);
+
+const filteredSessions = sessions.filter(
+  (session) => session.course_id === courseId,
+);
+
+const selectedSession = filteredSessions.find(
+  (session) => session.id === sessionId,
+);
 
   return (
     <>
@@ -135,19 +155,130 @@ export function EnquiryStatusWorkflow({
               Internal Notes
             </label>
 
-            <textarea
-              id="internal_notes"
-              name="internal_notes"
-              rows={5}
-              defaultValue={internalNotes}
-              placeholder="Example: Called the student, shared course details, follow-up required next week..."
-              className="w-full resize-y rounded-xl border border-(--border) bg-(--bg-page) px-4 py-3 text-sm leading-6 text-(--text-primary) outline-none transition placeholder:text-(--text-muted) focus:border-orange-500"
-            />
+          <textarea
+  id="internal_notes"
+  name="internal_notes"
+  rows={5}
+  value={notes}
+  onChange={(e) => setNotes(e.target.value)}
+  placeholder="Example: Called the student, shared course details, follow-up required next week..."
+  className="w-full resize-y rounded-xl border border-(--border) bg-(--bg-page) px-4 py-3 text-sm leading-6 text-(--text-primary) outline-none transition placeholder:text-(--text-muted) focus:border-orange-500"
+/>
 
             <p className="mt-2 text-xs text-(--text-muted)">
               These notes are private and visible only to your admin team.
             </p>
           </div>
+
+          {currentStatus === 'in_progress' && status === 'converted' && (
+  <div className="space-y-5 rounded-xl border border-orange-500/30 p-5">
+    <div>
+      <h3 className="font-bold text-(--text-primary)">
+        Course Conversion Details
+      </h3>
+      <p className="mt-1 text-sm text-(--text-secondary)">
+        These details will be emailed to the student.
+      </p>
+    </div>
+
+    <div>
+      <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
+        Select Course *
+      </label>
+
+      <select
+        name="course_id"
+        required
+        value={courseId}
+        onChange={(e) => {
+          setCourseId(e.target.value);
+          setSessionId('');
+        }}
+        className={inputClass}
+      >
+        <option value="">Choose a course</option>
+        {courses.map((course) => (
+          <option key={course.id} value={course.id}>
+            {course.title}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
+        Training Session
+      </label>
+
+      <select
+        name="session_id"
+        value={sessionId}
+        onChange={(e) => setSessionId(e.target.value)}
+        disabled={!courseId || filteredSessions.length === 0}
+        className={inputClass}
+      >
+        <option value="">
+          {!courseId
+            ? 'Select a course first'
+            : filteredSessions.length === 0
+              ? 'No sessions available'
+              : 'No specific session'}
+        </option>
+
+        {filteredSessions.map((session) => (
+          <option key={session.id} value={session.id}>
+            {session.start_date}
+            {session.location ? ` - ${session.location}` : ''}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {selectedSession && (
+      <div className="rounded-xl border border-(--border) bg-(--bg-page) p-4">
+        <p className="font-bold text-(--text-primary)">
+          Selected Session Details
+        </p>
+        <p className="mt-2 text-sm text-(--text-secondary)">
+          Start: {selectedSession.start_date}
+        </p>
+        <p className="text-sm text-(--text-secondary)">
+          End: {selectedSession.end_date || 'Not specified'}
+        </p>
+        <p className="text-sm text-(--text-secondary)">
+          Time: {selectedSession.start_time || 'Not specified'}
+        </p>
+        <p className="text-sm text-(--text-secondary)">
+          Location: {selectedSession.location || 'Not specified'}
+        </p>
+      </div>
+    )}
+
+    <div>
+      <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
+        Meeting Link
+      </label>
+      <input
+        type="url"
+        name="meeting_link"
+        placeholder="https://zoom.us/j/..."
+        className={inputClass}
+      />
+    </div>
+
+    <div>
+      <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
+        Additional Instructions
+      </label>
+      <textarea
+        name="additional_message"
+        rows={4}
+        placeholder="Joining instructions, payment details or other information..."
+        className={inputClass}
+      />
+    </div>
+  </div>
+)}
 
           <div className="flex flex-wrap justify-end gap-3 border-t border-(--border) pt-5">
             <a
@@ -157,175 +288,19 @@ export function EnquiryStatusWorkflow({
               Cancel
             </a>
 
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-xl bg-(--text-primary) px-5 py-2.5 text-sm font-bold text-(--bg-page) transition hover:opacity-80"
-            >
-              Save Changes
-            </button>
+           <button
+  type="submit"
+  className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+>
+  Save Changes
+</button>
           </div>
         </form>
       </section>
 
-      {status === 'converted' && (
-        <ConversionForm
-          enquiryId={enquiryId}
-          courses={courses}
-          sessions={sessions}
-        />
-      )}
+   
     </>
   );
 }
 
-export default function ConversionForm({
-  enquiryId,
-  courses,
-  sessions,
-}: Props) {
-  const [courseId, setCourseId] = useState('');
-  const [sessionId, setSessionId] = useState('');
 
-  const filteredSessions = sessions.filter(
-    (session) => session.course_id === courseId,
-  );
-
-  const selectedSession = filteredSessions.find(
-    (session) => session.id === sessionId,
-  );
-
-  return (
-    <section className="rounded-2xl border border-orange-500/30 bg-(--bg-card) p-5 sm:p-6">
-      <div className="mb-6">
-        <h2 className="text-lg font-bold text-(--text-primary)">
-          Course Conversion Details
-        </h2>
-
-        <p className="mt-1 text-sm text-(--text-secondary)">
-          Select a course and provide the details that will be
-          emailed to the student.
-        </p>
-      </div>
-
-      <form
-        action={convertEnquiry.bind(null, enquiryId)}
-        className="space-y-5"
-      >
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
-            Select Course *
-          </label>
-
-          <select
-            name="course_id"
-            required
-            value={courseId}
-            onChange={(e) => {
-              setCourseId(e.target.value);
-              setSessionId('');
-            }}
-            className={inputClass}
-          >
-            <option value="">Choose a course</option>
-
-            {courses.map((course) => (
-              <option key={course.id} value={course.id}>
-                {course.title}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
-            Training Session
-          </label>
-
-          <select
-            name="session_id"
-            value={sessionId}
-            onChange={(e) => setSessionId(e.target.value)}
-            disabled={!courseId || filteredSessions.length === 0}
-            className={inputClass}
-          >
-            <option value="">
-              {!courseId
-                ? 'Select a course first'
-                : filteredSessions.length === 0
-                  ? 'No sessions available for this course'
-                  : 'No specific session'}
-            </option>
-
-            {filteredSessions.map((session) => (
-              <option key={session.id} value={session.id}>
-                {session.start_date}
-                {session.location ? ` - ${session.location}` : ''}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {selectedSession && (
-          <div className="rounded-xl border border-(--border) bg-(--bg-page) p-4">
-            <p className="text-sm font-bold text-(--text-primary)">
-              Selected Session Details
-            </p>
-
-            <p className="mt-2 text-sm text-(--text-secondary)">
-              Start: {selectedSession.start_date}
-            </p>
-
-            <p className="mt-1 text-sm text-(--text-secondary)">
-              End: {selectedSession.end_date || 'Not specified'}
-            </p>
-
-            <p className="mt-1 text-sm text-(--text-secondary)">
-              Time: {selectedSession.start_time || 'Not specified'}
-            </p>
-
-            <p className="mt-1 text-sm text-(--text-secondary)">
-              Location: {selectedSession.location || 'Not specified'}
-            </p>
-          </div>
-        )}
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
-            Zoom / Google Meet / Other Meeting Link
-          </label>
-
-          <input
-            type="url"
-            name="meeting_link"
-            placeholder="https://zoom.us/j/..."
-            className={inputClass}
-          />
-
-          <p className="mt-2 text-xs text-(--text-muted)">
-            Optional. Overrides the selected session's meeting link.
-          </p>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-(--text-primary)">
-            Additional Instructions
-          </label>
-
-          <textarea
-            name="additional_message"
-            rows={4}
-            placeholder="Add joining instructions, payment details or other information..."
-            className={inputClass}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full rounded-xl bg-orange-500 px-5 py-3 font-bold text-white transition hover:bg-orange-600"
-        >
-          Submit
-        </button>
-      </form>
-    </section>
-  );
-}

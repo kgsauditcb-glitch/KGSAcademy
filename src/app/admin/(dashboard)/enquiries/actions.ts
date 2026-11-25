@@ -94,6 +94,20 @@ export async function updateEnquiry(
  const newStatus = status as EnquiryStatus;
 
 const statusChanged = existing.status !== newStatus;
+if (newStatus === 'converted' && existing.status === 'in_progress') {
+  return convertEnquiry(enquiryId, formData);
+}
+
+if (
+  newStatus === 'converted' &&
+  existing.status !== 'converted'
+) {
+  redirect(
+    `${editUrl}?error=${encodeURIComponent(
+      'Please move the enquiry to In Progress before converting it.',
+    )}`,
+  );
+}
 
 const isClosingConvertedEnquiry =
   existing.status === 'converted' &&
@@ -198,6 +212,7 @@ export async function convertEnquiry(
     formData,
     'additional_message',
   );
+  const internalNotes = getFormValue(formData, 'internal_notes');
 
   const editUrl = `/admin/enquiries/${enquiryId}/edit`;
 
@@ -342,7 +357,11 @@ if (emailError || !emailData?.success) {
   // Update enquiry status only after successful email delivery.
   const { data: updated, error: updateError } = await supabase
     .from('enquiries')
-    .update({ status: 'converted' })
+    .update({
+  status: 'converted',
+  internal_notes: internalNotes || null,
+  updated_at: new Date().toISOString(),
+})
     .eq('id', enquiryId)
     .eq('status', 'in_progress')
     .select('id')
