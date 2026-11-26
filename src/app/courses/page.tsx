@@ -1,5 +1,5 @@
 export const instant = false;
-
+import { connection } from 'next/server';
 import Link from 'next/link';
 import { CourseCard } from '@/components/CourseCard';
 import { getCourses, getCategories, getStandards, getActiveOffers, offerForCourse, isSupabaseConfigured } from '@/lib/data';
@@ -10,6 +10,9 @@ export default async function CoursesPage({
   searchParams,
 }: PageProps<'/courses'>) {
   const params = await searchParams;
+
+
+  await connection();
 const categoriesSelected = Array.isArray(params.category)
   ? params.category
   : params.category
@@ -192,7 +195,7 @@ const visibleStandards = q
         </h2>
 
         <p className="mt-3 text-(--text-secondary)">
-          The course "{q}" is coming up in the next release.
+          The course &quot;{q}&quot; is coming up in the next release.
         </p>
 
         <p className="mt-2 text-sm text-(--text-secondary)">

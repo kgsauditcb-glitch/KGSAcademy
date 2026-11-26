@@ -19,6 +19,19 @@ const COURSE_STATUSES: CourseStatus[] = [
   'archived',
 ];
 
+const SUPPORTED_CURRENCIES = [
+  'INR',
+  'USD',
+  'GBP',
+  'EUR',
+  'AED',
+  'AUD',
+  'CAD',
+  'SGD',
+  'SAR',
+  'JPY',
+];
+
 async function requireAdmin() {
   const supabase = await createClient();
 
@@ -148,6 +161,12 @@ function getCourseValues(formData: FormData) {
 
   const modeValue = textValue(formData, 'mode');
   const statusValue = textValue(formData, 'status');
+  const currencyCode = textValue(formData, 'currency_code') || 'INR';
+const onDemand = formData.get('on_demand') === 'on';
+
+if (!SUPPORTED_CURRENCIES.includes(currencyCode)) {
+  throw new Error('Please select a valid currency.');
+}
 
   if (!title) {
     throw new Error('Course title is required.');
@@ -193,9 +212,11 @@ function getCourseValues(formData: FormData) {
     category_id: nullableText(textValue(formData, 'category_id')),
     standard_id: nullableText(textValue(formData, 'standard_id')),
     duration_days: durationValue,
-    mode: modeValue as CourseMode,
-    price_inr: priceValue,
-    mrp_inr: mrpValue,
+   mode: modeValue as CourseMode,
+price_inr: priceValue,
+mrp_inr: mrpValue,
+currency_code: currencyCode,
+on_demand: onDemand,
     certificate: formData.get('certificate') === 'on',
     featured: formData.get('featured') === 'on',
     status: statusValue as CourseStatus,
@@ -241,6 +262,8 @@ export async function createCourseAction(formData: FormData) {
       mode: values.mode,
       price_inr: values.price_inr,
       mrp_inr: values.mrp_inr,
+      currency_code: values.currency_code,
+on_demand: values.on_demand,
       certificate: values.certificate,
       featured: values.featured,
       status: values.status,
@@ -266,6 +289,7 @@ export async function createCourseAction(formData: FormData) {
   revalidateCoursePages(slug);
   redirect('/admin/courses?success=created');
 }
+
 
 export async function updateCourseAction(
   courseId: string,
@@ -297,11 +321,17 @@ export async function updateCourseAction(
       standard_id: values.standard_id,
       duration_days: values.duration_days,
       mode: values.mode,
+
+      // Pricing fields
       price_inr: values.price_inr,
       mrp_inr: values.mrp_inr,
+      currency_code: values.currency_code,
+      on_demand: values.on_demand,
+
       certificate: values.certificate,
       featured: values.featured,
       status: values.status,
+
       ...(thumbnail ? { thumbnail_url: thumbnail.url } : {}),
     };
 
@@ -325,7 +355,9 @@ export async function updateCourseAction(
     }
 
     const message =
-      error instanceof Error ? error.message : 'Could not update course.';
+      error instanceof Error
+        ? error.message
+        : 'Could not update course.';
 
     redirect(
       `/admin/courses/${courseId}/edit?error=${encodeURIComponent(message)}`,
@@ -335,4 +367,5 @@ export async function updateCourseAction(
   revalidateCoursePages(slug);
   redirect('/admin/courses?success=updated');
 }
+
 

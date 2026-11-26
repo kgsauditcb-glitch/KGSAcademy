@@ -4,9 +4,14 @@ import type { CourseWithRelations } from '@/lib/data';
 import { offerBadgeLabel, offerDiscount } from '@/lib/data';
 import type { Offer } from '@/types/database';
 
-function inr(value: number | null) {
+function formatPrice(value: number | null, currency: string) {
   if (value == null) return null;
-  return `₹${value.toLocaleString('en-IN')}`;
+
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 export function CourseCard({
@@ -16,11 +21,20 @@ export function CourseCard({
   course: CourseWithRelations;
   offer?: Offer | null;
 }) {
-  const price = inr(course.price_inr);
+  const currency = course.currency_code || 'INR';
+
+  const price = formatPrice(course.price_inr, currency);
+  const mrp = formatPrice(course.mrp_inr, currency);
 
   const finalPrice =
     offer && course.price_inr != null
-      ? inr(Math.max(0, course.price_inr - offerDiscount(offer, course.price_inr)))
+      ? formatPrice(
+          Math.max(
+            0,
+            course.price_inr - offerDiscount(offer, course.price_inr),
+          ),
+          currency,
+        )
       : price;
 
   return (
@@ -28,38 +42,38 @@ export function CourseCard({
       href={`/courses/${course.slug}`}
       className="group overflow-hidden rounded-2xl border border-(--border) bg-(--bg-card) shadow-sm transition hover:shadow-md"
     >
-     {/* Course Thumbnail */}
-<div className="relative h-32 overflow-hidden">
-  {course.thumbnail_url ? (
-    <img
-      src={course.thumbnail_url}
-      alt={course.title}
-      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-    />
-  ) : (
-    <div className="flex h-full items-end bg-gradient-to-br from-orange-900 to-amber-900 p-4">
-      <span className="text-xs font-extrabold uppercase tracking-wide text-orange-300">
-        {course.categories?.name ?? 'Course'}
-        {course.featured && ' • Featured'}
-      </span>
-    </div>
-  )}
+      {/* Course Thumbnail */}
+      <div className="relative h-32 overflow-hidden">
+        {course.thumbnail_url ? (
+          <img
+            src={course.thumbnail_url}
+            alt={course.title}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-end bg-gradient-to-br from-orange-900 to-amber-900 p-4">
+            <span className="text-xs font-extrabold uppercase tracking-wide text-orange-300">
+              {course.categories?.name ?? 'Course'}
+              {course.featured && ' • Featured'}
+            </span>
+          </div>
+        )}
 
-  {offer && (
-    <span className="absolute right-3 top-3 rounded-full bg-orange-500 px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-white shadow">
-      {offerBadgeLabel(offer)}
-    </span>
-  )}
+        {offer && !course.on_demand && (
+          <span className="absolute right-3 top-3 rounded-full bg-orange-500 px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-white shadow">
+            {offerBadgeLabel(offer)}
+          </span>
+        )}
 
-  {course.thumbnail_url && (
-    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-8">
-      <span className="text-xs font-extrabold uppercase tracking-wide text-white">
-        {course.categories?.name ?? 'Course'}
-        {course.featured && ' • Featured'}
-      </span>
-    </div>
-  )}
-</div>
+        {course.thumbnail_url && (
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-8">
+            <span className="text-xs font-extrabold uppercase tracking-wide text-white">
+              {course.categories?.name ?? 'Course'}
+              {course.featured && ' • Featured'}
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* Course Details */}
       <div className="p-5">
@@ -77,13 +91,17 @@ export function CourseCard({
           {course.certificate && <span>Certificate</span>}
         </div>
 
-        {finalPrice && (
+        {course.on_demand ? (
+          <div className="mt-4 font-extrabold text-orange-400">
+            Price on Request
+          </div>
+        ) : finalPrice ? (
           <div className="mt-4 font-extrabold">
             {finalPrice}
 
-            {price && finalPrice !== price && (
+            {mrp && (
               <span className="ml-2 text-sm font-medium text-(--text-secondary) line-through">
-                {price}
+                {mrp}
               </span>
             )}
 
@@ -93,7 +111,7 @@ export function CourseCard({
               </span>
             )}
           </div>
-        )}
+        ) : null}
       </div>
     </Link>
   );

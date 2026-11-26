@@ -30,6 +30,8 @@ type CourseFormValues = {
   featured?: boolean;
   status?: string;
   thumbnail_url?: string | null;
+  currency_code?: string | null;
+on_demand?: boolean;
 };
 
 type CourseFormProps = {
@@ -221,44 +223,98 @@ export function CourseForm({
         </div>
       </section>
 
+    
       {/* Pricing */}
       <section className="rounded-2xl border border-(--border) bg-(--bg-card) p-6">
         <h2 className="text-lg font-black">Pricing</h2>
+        <p className="mt-1 text-sm text-(--text-secondary)">
+          Configure course pricing and currency.
+        </p>
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-          <div>
-            <label htmlFor="price_inr" className={labelClass}>
-              Selling price (₹)
-            </label>
+        <div className="mt-6 space-y-5">
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-(--border) bg-(--bg-page) p-4">
             <input
-              id="price_inr"
-              name="price_inr"
-              type="number"
-              min="0"
-              step="0.01"
-              defaultValue={initialData?.price_inr ?? ''}
-              placeholder="Example: 15000"
-              className={inputClass}
+              type="checkbox"
+              name="on_demand"
+              defaultChecked={initialData?.on_demand ?? false}
+              className="mt-1 h-4 w-4 accent-orange-500"
             />
+            <span>
+              <span className="block text-sm font-bold">
+                Price on demand
+              </span>
+              <span className="mt-1 block text-xs text-(--text-secondary)">
+                Hide course prices on the website and display
+                &quot;Price on Request&quot; instead.
+              </span>
+            </span>
+          </label>
+
+          <div className="max-w-sm">
+            <label htmlFor="currency_code" className={labelClass}>
+              Currency
+            </label>
+            <select
+              id="currency_code"
+              name="currency_code"
+              defaultValue={initialData?.currency_code ?? 'INR'}
+              required
+              className={inputClass}
+            >
+              <option value="INR">INR — Indian Rupee (₹)</option>
+              <option value="USD">USD — US Dollar ($)</option>
+              <option value="GBP">GBP — British Pound (£)</option>
+              <option value="EUR">EUR — Euro (€)</option>
+              <option value="AED">AED — UAE Dirham (د.إ)</option>
+              <option value="AUD">AUD — Australian Dollar (A$)</option>
+              <option value="CAD">CAD — Canadian Dollar (C$)</option>
+              <option value="SGD">SGD — Singapore Dollar (S$)</option>
+              <option value="SAR">SAR — Saudi Riyal (ر.س)</option>
+              <option value="JPY">JPY — Japanese Yen (¥)</option>
+            </select>
           </div>
 
-          <div>
-            <label htmlFor="mrp_inr" className={labelClass}>
-              Original price / MRP (₹)
-            </label>
-            <input
-              id="mrp_inr"
-              name="mrp_inr"
-              type="number"
-              min="0"
-              step="0.01"
-              defaultValue={initialData?.mrp_inr ?? ''}
-              placeholder="Example: 20000"
-              className={inputClass}
-            />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="price_inr" className={labelClass}>
+                Selling price
+              </label>
+              <input
+                id="price_inr"
+                name="price_inr"
+                type="number"
+                min="0"
+                step="0.01"
+                defaultValue={initialData?.price_inr ?? ''}
+                placeholder="Example: 15000"
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="mrp_inr" className={labelClass}>
+                Original price
+              </label>
+              <input
+                id="mrp_inr"
+                name="mrp_inr"
+                type="number"
+                min="0"
+                step="0.01"
+                defaultValue={initialData?.mrp_inr ?? ''}
+                placeholder="Example: 20000"
+                className={inputClass}
+              />
+            </div>
           </div>
+
+          <p className="text-xs text-(--text-secondary)">
+            Prices are stored in the selected currency. Currency selection
+            does not automatically convert amounts.
+          </p>
         </div>
       </section>
+
 
       {/* Thumbnail Image */}
       <section className="rounded-2xl border border-(--border) bg-(--bg-card) p-6">

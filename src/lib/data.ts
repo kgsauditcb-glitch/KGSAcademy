@@ -226,6 +226,29 @@ export async function getEnquiries(): Promise<Enquiry[]> {
   return data ?? [];
 }
 
+export async function getEnquiryActivityHistory(
+  enquiryIds: string[],
+) {
+  if (!isSupabaseConfigured() || enquiryIds.length === 0) {
+    return [];
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('enquiry_activity_history')
+    .select('*')
+    .in('enquiry_id', enquiryIds)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching enquiry activity:', error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
 export async function getCurrentProfile(): Promise<Profile | null> {
   if (!isSupabaseConfigured()) return null;
   const supabase = await createClient();

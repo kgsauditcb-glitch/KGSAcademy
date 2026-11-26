@@ -47,8 +47,10 @@ export interface Course {
   standard_id: string | null;
   duration_days: number | null;
   mode: CourseMode;
-  price_inr: number | null;
+    price_inr: number | null;
   mrp_inr: number | null;
+  currency_code: string;
+  on_demand: boolean;
   certificate: boolean;
   featured: boolean;
   status: CourseStatus;

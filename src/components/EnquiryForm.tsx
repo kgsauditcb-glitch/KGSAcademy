@@ -7,33 +7,61 @@ export function EnquiryForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const router = useRouter();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-    // Honeypot: bots fill this hidden field — silently accept and drop.
-    if (data['bot-field']) {
-      setStatus('sent');
-      return;
-    }
+  const form = e.currentTarget;
+  const data = Object.fromEntries(new FormData(form).entries());
 
-    setStatus('sending');
+  if (data['bot-field']) {
+    setStatus('sent');
+    return;
+  }
 
+  setStatus('sending');
+
+  try {
+   
     const res = await fetch('/api/enquiries', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
     });
 
     if (!res.ok) {
-      setStatus('error');
-      return;
+      throw new Error('Failed to save enquiry');
     }
-    setStatus('sent');
+
+    
+    const message = `
+*KGS ACADEMY - NEW ENQUIRY*
+
+Name: ${data.name}
+Phone: ${data.phone || 'Not provided'}
+Email: ${data.email}
+Enquiry Type: ${data.enquiry_type}
+Course: ${data.course || 'Not specified'}
+
+Message:
+${data.message || 'No message provided'}
+    `.trim();
+
+    const managementNumber = '919999999999';
+
+    const whatsappUrl = `https://wa.me/${managementNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, '_blank');
+
     form.reset();
-    router.refresh();
+    setStatus('sent');
+
+  } catch (error) {
+    console.error('Enquiry submission error:', error);
+    setStatus('error');
   }
+}
 
   if (status === 'sent') {
     return (
@@ -52,7 +80,7 @@ export function EnquiryForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      {/* Honeypot — hidden from humans */}
+      
       <input type="text" name="bot-field" className="hidden" tabIndex={-1} autoComplete="off" />
 
       <div className="grid grid-cols-2 gap-3">

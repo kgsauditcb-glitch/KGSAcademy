@@ -4,6 +4,7 @@ import { connection } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
+import { EnquiryStatusWorkflow } from './ConversionForm';
 
 import { updateEnquiry } from '../../actions';
 import type { EnquiryStatus } from '@/types/database';
@@ -86,7 +87,23 @@ export default async function EditEnquiryPage({
   }
 
   const status = enquiry.status as EnquiryStatus;
+const { data: courses, error: coursesError } = await supabase
+  .from('courses')
+  .select('id, title, mode, duration_days')
+  .eq('status', 'published')
+  .order('title');
 
+if (coursesError) throw coursesError;
+
+const { data: sessions, error: sessionsError } = await supabase
+  .from('course_sessions')
+  .select(
+    'id, course_id, start_date, end_date, start_time, location, meeting_url',
+  )
+  .in('status', ['scheduled', 'open'])
+  .order('start_date');
+
+if (sessionsError) throw sessionsError;
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       {/* Header */}
@@ -202,91 +219,27 @@ export default async function EditEnquiryPage({
         )}
       </section>
 
+   
+
+
       {/* Update form */}
-      <section className="rounded-2xl border border-(--border) bg-(--bg-card) p-5 sm:p-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold text-(--text-primary)">
-            Manage Enquiry
-          </h2>
+   
 
-          <p className="mt-1 text-sm text-(--text-secondary)">
-            Update the enquiry status and add private notes for your team.
-          </p>
-        </div>
-
-        <form
-          action={updateEnquiry.bind(null, enquiry.id)}
-          className="space-y-6"
-        >
-          {/* Status */}
-          <div>
-            <label
-              htmlFor="status"
-              className="mb-2 block text-sm font-semibold text-(--text-primary)"
-            >
-              Enquiry Status
-            </label>
-
-            <select
-              id="status"
-              name="status"
-              defaultValue={enquiry.status}
-              required
-              className="w-full rounded-xl border border-(--border) bg-(--bg-page) px-4 py-3 text-sm text-(--text-primary) outline-none transition focus:border-orange-500"
-            >
-              {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-
-            <p className="mt-2 text-xs text-(--text-muted)">
-              Choose the current progress of this enquiry.
-            </p>
-          </div>
-
-          {/* Internal notes */}
-          <div>
-            <label
-              htmlFor="internal_notes"
-              className="mb-2 block text-sm font-semibold text-(--text-primary)"
-            >
-              Internal Notes
-            </label>
-
-            <textarea
-              id="internal_notes"
-              name="internal_notes"
-              rows={5}
-              defaultValue={enquiry.internal_notes ?? ''}
-              placeholder="Example: Called the student, shared course details, follow-up required next week..."
-              className="w-full resize-y rounded-xl border border-(--border) bg-(--bg-page) px-4 py-3 text-sm leading-6 text-(--text-primary) outline-none transition placeholder:text-(--text-muted) focus:border-orange-500"
-            />
-
-            <p className="mt-2 text-xs text-(--text-muted)">
-              These notes are private and visible only to your admin team.
-            </p>
-          </div>
-
-          {/* Actions */}
-          <div className="flex flex-wrap justify-end gap-3 border-t border-(--border) pt-5">
-            <Link
-              href="/admin/enquiries"
-              className="inline-flex items-center justify-center rounded-xl border border-(--border) px-5 py-2.5 text-sm font-semibold text-(--text-secondary) transition hover:bg-(--bg-subtle)"
-            >
-              Cancel
-            </Link>
-
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center rounded-xl bg-(--text-primary) px-5 py-2.5 text-sm font-bold text-(--bg-page) transition hover:opacity-80"
-            >
-              Save Changes
-            </button>
-          </div>
-        </form>
-      </section>
+   <EnquiryStatusWorkflow
+  enquiryId={enquiry.id}
+  currentStatus={status}
+  internalNotes={enquiry.internal_notes ?? ''}
+  courses={courses ?? []}
+  sessions={(sessions ?? []).map((session) => ({
+    id: session.id,
+    course_id: session.course_id,
+    start_date: session.start_date,
+    end_date: session.end_date,
+    start_time: session.start_time,
+    location: session.location,
+    meeting_url: session.meeting_url,
+  }))}
+/>
     </div>
   );
 }
